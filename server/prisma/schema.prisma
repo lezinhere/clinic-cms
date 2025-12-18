@@ -1,0 +1,127 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User model handles all roles. 
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  role      String   // Was Enum Role
+  specialization String? // Doctor specialization
+  passcode  String?  // Secure PIN for staff/admin
+  // Patient specific fields
+  displayId String? @unique // e.g. "PT-1001"
+  age       Int?
+  sex       String?
+  phone     String?
+  
+  // Relations
+  patientAppointments Appointment[] @relation("PatientAppointments")
+  doctorAppointments  Appointment[] @relation("DoctorAppointments")
+  
+  prescriptionsDispensed Prescription[]
+  labReportsFiled        LabRequest[]
+
+  createdAt DateTime @default(now())
+}
+
+model Appointment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  patientId String   @db.ObjectId
+  doctorId  String   @db.ObjectId
+  date      DateTime
+  status    String    @default("PENDING") // Was Enum AppointmentStatus
+  
+  patient   User @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctor    User @relation("DoctorAppointments", fields: [doctorId], references: [id])
+
+  consultation Consultation?
+
+  createdAt DateTime @default(now())
+}
+
+model Consultation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  appointmentId String   @unique @db.ObjectId
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  
+  notes         String? // Doctor's special notes / summary
+  diagnosis     String?
+  nextVisitDate DateTime?
+  
+  prescriptions Prescription[]
+  labRequests   LabRequest[]
+
+  createdAt DateTime @default(now())
+}
+
+// Dynamic medicine learning:
+// When doctor types a new medicine, we create it here.
+// usageCount helps in ranking suggestions.
+model Medicine {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  usageCount Int      @default(0) // increment when prescribed
+
+  prescriptionItems PrescriptionItem[]
+}
+
+model LabTest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  usageCount Int      @default(0)
+}
+
+model Prescription {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  consultationId String   @db.ObjectId
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
+  
+  items          PrescriptionItem[]
+  
+  isDispensed    Boolean @default(false)
+  dispensedById  String? @db.ObjectId
+  dispensedBy    User?   @relation(fields: [dispensedById], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model PrescriptionItem {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  prescriptionId String   @db.ObjectId
+  medicineId     String   @db.ObjectId
+  
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id])
+  medicine       Medicine     @relation(fields: [medicineId], references: [id])
+  
+  dosage         String // e.g. "1-0-1 after food"
+  duration       String // e.g. "5 days"
+}
+
+model LabRequest {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  consultationId String   @db.ObjectId
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
+  
+  testName       String // e.g. "Blood Test"
+  status         String @default("PENDING") // PENDING, COMPLETED
+  
+  resultReport   String? // Text summary or URL to file
+  technicianId   String?  @db.ObjectId
+  technician     User?   @relation(fields: [technicianId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Otp {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  phone     String   @unique
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
