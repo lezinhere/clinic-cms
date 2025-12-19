@@ -47,105 +47,99 @@ export default function LabHistory() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto p-6 md:p-12 pb-32">
-            <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-16">
+        <div className="max-w-[1600px] mx-auto p-6 grid grid-cols-1 gap-6">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                 <div>
-                    <Link to="/lab/requests" className="text-purple-600 font-black text-[9px] uppercase tracking-[0.3em] mb-2 block hover:translate-x-[-2px] transition-transform">
-                        ← Returns to Requests
+                    <Link to="/lab/requests" className="text-purple-600 font-semibold text-xs mb-2 block hover:underline flex items-center gap-1">
+                        <span>←</span> Back to Requests
                     </Link>
-                    <h1 className="text-5xl font-black text-slate-900 tracking-tighter">Diagnostic Archive</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Diagnostic Archive</h1>
                 </div>
-                <div className="w-full lg:w-96 relative">
+                <div className="w-full md:w-80 relative">
                     <input
                         type="text"
-                        placeholder="Search Registry..."
-                        className="w-full p-6 pl-16 bg-slate-50 border-2 border-transparent focus:border-purple-500 focus:bg-white rounded-[2.5rem] outline-none text-sm font-black shadow-inner transition-all tracking-tight"
+                        placeholder="Search registry..."
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none text-sm font-medium transition-all"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <span className="absolute left-7 top-1/2 -translate-y-1/2 text-xl opacity-30">🔍</span>
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg">🔍</span>
                 </div>
             </header>
 
             {loading ? (
-                <div className="space-y-6">
-                    {[1, 2, 3, 4, 5].map(i => (
-                        <div key={i} className="h-24 bg-slate-50 rounded-[2.5rem] animate-pulse"></div>
+                <div className="space-y-3">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="h-16 bg-white border border-gray-100 rounded-xl animate-pulse"></div>
                     ))}
                 </div>
             ) : history.length === 0 ? (
-                <div className="bg-white rounded-[4rem] border-2 border-dashed border-slate-100 p-24 text-center">
-                    <div className="text-4xl mb-6 opacity-10 italic">EMPTY_VAULT</div>
-                    <p className="text-slate-300 font-black uppercase tracking-widest text-[9px]">No historical data found</p>
+                <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-12 text-center flex flex-col items-center">
+                    <div className="text-3xl mb-4 opacity-30">📊</div>
+                    <p className="text-gray-500 font-medium text-sm">No historical data found</p>
                 </div>
             ) : (
-                <div className="grid gap-6">
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     {/* Header Row */}
-                    <div className="hidden md:grid grid-cols-12 bg-slate-50/50 p-8 rounded-[2.5rem] text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
-                        <div className="col-span-2">Archive Date</div>
-                        <div className="col-span-3">Diagnostic Type</div>
-                        <div className="col-span-3">Patient Profile</div>
-                        <div className="col-span-4">Registry Report</div>
+                    <div className="hidden md:grid grid-cols-12 bg-gray-50/50 p-4 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        <div className="col-span-2 pl-2">Date</div>
+                        <div className="col-span-3">Test Name</div>
+                        <div className="col-span-3">Patient</div>
+                        <div className="col-span-4">Report Summary</div>
                     </div>
 
-                    {history.map((item) => (
-                        <div key={item.id} className="bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl shadow-slate-100/30 border border-slate-50 hover:border-purple-200 transition-all group overflow-hidden relative">
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-bl-[4rem] -mr-8 -mt-8 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center pt-6 pl-6">
-                                <span className="text-purple-600 font-black text-[9px] uppercase tracking-tighter rotate-12">Closed</span>
-                            </div>
-
-                            {/* Mobile View */}
-                            <div className="md:hidden space-y-6">
-                                <div className="flex justify-between items-start">
-                                    <div className="space-y-1">
-                                        <p className="text-[9px] text-slate-300 font-bold uppercase tracking-widest">
-                                            {new Date(item.createdAt).toLocaleDateString()}
-                                        </p>
-                                        <h3 className="text-2xl font-black text-slate-900 leading-tight uppercase tracking-tighter">{item.testName}</h3>
+                    <div className="divide-y divide-gray-50">
+                        {history.map((item) => (
+                            <div key={item.id} className="p-4 hover:bg-gray-50 transition-colors group">
+                                {/* Mobile View */}
+                                <div className="md:hidden space-y-3">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="text-xs text-gray-400 font-medium mb-1">
+                                                {new Date(item.createdAt).toLocaleDateString()}
+                                            </p>
+                                            <h3 className="font-bold text-gray-900">
+                                                {item.testName}
+                                            </h3>
+                                        </div>
+                                        <span className="bg-purple-50 text-purple-700 text-[10px] px-2 py-1 rounded-md font-bold border border-purple-100">
+                                            Verified
+                                        </span>
                                     </div>
-                                    <div className="bg-purple-600 text-white text-[8px] px-3 py-1.5 rounded-full font-black uppercase tracking-[0.2em] shadow-lg shadow-purple-100">
-                                        Verified
+
+                                    <div className="text-xs text-gray-600">
+                                        <span className="text-gray-400">Patient:</span> {item.consultation.appointment.patient.name}
+                                    </div>
+
+                                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-xs text-gray-600">
+                                        <span className="font-semibold text-gray-500 display-block mb-1">Result:</span>
+                                        <div className="truncate">{item.resultReport}</div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-4 pt-6 border-t border-slate-50">
-                                    <div>
-                                        <p className="text-[9px] text-slate-300 font-black uppercase tracking-widest mb-1.5">Selected Patient</p>
-                                        <div className="flex items-center gap-2">
-                                            <p className="text-sm text-slate-900 font-black uppercase">{item.consultation.appointment.patient.name}</p>
-                                            <span className="px-2 py-0.5 bg-slate-100 text-slate-400 rounded-md text-[8px] font-black uppercase tracking-tighter">PT-{item.consultation.appointment.patient.id.slice(-4)}</span>
+
+                                {/* Desktop View */}
+                                <div className="hidden md:grid grid-cols-12 items-center gap-4">
+                                    <div className="col-span-2 text-sm text-gray-600 pl-2">
+                                        {new Date(item.createdAt).toLocaleDateString()}
+                                    </div>
+                                    <div className="col-span-3 font-semibold text-gray-900 text-sm">
+                                        {item.testName}
+                                    </div>
+                                    <div className="col-span-3">
+                                        <div className="flex flex-col">
+                                            <span className="font-medium text-gray-900 text-sm">{item.consultation.appointment.patient.name}</span>
+                                            <span className="text-xs text-gray-400">#RX-{item.id.slice(-4)}</span>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p className="text-[9px] text-slate-300 font-black uppercase tracking-widest mb-1.5">Registry Narrative</p>
-                                        <div className="p-5 bg-slate-50 rounded-2xl border border-slate-50 text-[10px] text-slate-500 font-medium italic leading-relaxed">
+                                    <div className="col-span-4">
+                                        <div className="text-xs text-gray-500 font-medium truncate bg-gray-50 px-3 py-1.5 rounded-lg border border-transparent group-hover:border-purple-100 group-hover:bg-purple-50 group-hover:text-purple-700 transition-all cursor-default">
                                             {item.resultReport}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Desktop View */}
-                            <div className="hidden md:grid grid-cols-12 items-center gap-6">
-                                <div className="col-span-2 text-slate-400 font-black text-[10px] tracking-tight">
-                                    {new Date(item.createdAt).toLocaleDateString()}
-                                </div>
-                                <div className="col-span-3 font-black text-slate-800 text-sm tracking-widest uppercase">
-                                    {item.testName}
-                                </div>
-                                <div className="col-span-3">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xs font-black text-slate-600 uppercase tracking-tighter">{item.consultation.appointment.patient.name}</span>
-                                        <span className="text-[8px] font-black text-slate-300">#RX-{item.id.slice(-4)}</span>
-                                    </div>
-                                </div>
-                                <div className="col-span-4">
-                                    <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-50 text-[10px] text-slate-400 font-medium italic group-hover:text-purple-600 group-hover:bg-purple-50 group-hover:border-purple-100 transition-all truncate pr-10">
-                                        {item.resultReport}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

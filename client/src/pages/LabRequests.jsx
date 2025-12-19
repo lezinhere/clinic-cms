@@ -69,73 +69,83 @@ export default function LabRequests() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto p-6 md:p-12 pb-32">
-            <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16">
+        <div className="max-w-[1600px] mx-auto p-6 grid grid-cols-1 gap-6">
+            <header className="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight">Clinical Diagnostics</h1>
-                    <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">Active Laboratory Worklist</p>
+                    <h1 className="text-2xl font-bold text-gray-900">Clinical Diagnostics</h1>
+                    <p className="text-sm text-gray-500 mt-1">Active Laboratory Worklist</p>
                 </div>
                 <Link
                     to="/lab/history"
-                    className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-purple-600 font-black text-xs uppercase tracking-widest hover:border-purple-600 transition-all shadow-sm"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 text-purple-700 font-semibold rounded-xl hover:bg-gray-100 transition-all text-sm border border-gray-200"
                 >
                     Diagnostic History
+                    <span>→</span>
                 </Link>
             </header>
 
             {loading ? (
-                <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-4">
                     {[1, 2, 3].map(i => (
-                        <div key={i} className="h-32 bg-slate-50 border border-slate-100 rounded-[2.5rem] animate-pulse"></div>
+                        <div key={i} className="h-40 bg-white border border-gray-100 rounded-xl animate-pulse"></div>
                     ))}
                 </div>
             ) : queue.length === 0 ? (
-                <div className="bg-white rounded-[4rem] border-2 border-dashed border-slate-100 p-24 text-center">
-                    <div className="text-5xl mb-6 opacity-20 italic">📂</div>
-                    <h2 className="text-2xl font-black text-slate-800 mb-2 tracking-tight">Worklist Clear</h2>
-                    <p className="text-slate-400 font-medium max-w-sm mx-auto">All diagnostic tasks have been fulfilled. The clinical engine is running smooth.</p>
+                <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+                    <div className="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center text-3xl mb-4">📂</div>
+                    <h2 className="text-lg font-bold text-gray-900">Worklist Clear</h2>
+                    <p className="text-sm text-gray-500 max-w-xs mt-1">All diagnostic tasks have been fulfilled.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {queue.map((item) => (
-                        <div key={item.id} className="bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl shadow-slate-100/50 border border-slate-50 flex flex-col md:flex-row items-center justify-between gap-10 group transition-all hover:scale-[1.01]">
-                            <div className="w-full">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-12 w-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-purple-50 group-hover:bg-purple-600 group-hover:text-white transition-all">
+                        <div key={item.id} className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden flex flex-col">
+                            <div className="p-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-start">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-10 w-10 bg-purple-100 text-purple-700 rounded-lg flex items-center justify-center font-bold text-lg">
                                         🧪
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl font-black text-slate-900 tracking-tight group-hover:text-purple-600 transition-colors uppercase">{item.testName}</h3>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <span className="text-[9px] font-black text-amber-500 bg-amber-50 px-3 py-1 rounded-lg uppercase tracking-widest border border-amber-100">Pending Analytics</span>
-                                            <span className="text-slate-300">•</span>
-                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Received {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                        <h3 className="font-bold text-gray-900 leading-tight">
+                                            {item.testName}
+                                        </h3>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            <span className="text-xs text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded font-medium border border-amber-100">
+                                                Pending
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
+                                <span className="text-xs font-bold text-gray-400 bg-white px-2 py-1 rounded border border-gray-100">
+                                    {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </div>
 
-                                <div className="flex items-center gap-4 bg-slate-50 p-5 rounded-[2rem] border border-slate-50 group-hover:bg-purple-50/30 group-hover:border-purple-100 transition-all">
-                                    <div className="text-lg">🆔</div>
+                            <div className="p-5 flex-1">
+                                <div className="space-y-3">
                                     <div>
-                                        <p className="text-slate-900 font-black tracking-tight">{item.consultation.appointment.patient.name}</p>
-                                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Patient</h4>
+                                        <p className="font-bold text-gray-900">{item.consultation.appointment.patient.name}</p>
+                                        <p className="text-xs text-gray-500">
                                             {item.consultation.appointment.patient.sex} • {item.consultation.appointment.patient.age}Y • PT-{item.consultation.appointment.patient.id.slice(-4)}
                                         </p>
                                     </div>
-                                    <div className="ml-auto text-right border-l border-slate-200 pl-4 hidden sm:block">
-                                        <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] mb-1">Clinic Origin</p>
-                                        <p className="text-[10px] font-black text-slate-600">DR. {item.consultation.appointment.doctor.name.toUpperCase()}</p>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Clinic Origin</h4>
+                                        <p className="text-sm font-medium text-gray-700">Dr. {item.consultation.appointment.doctor.name}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => handleComplete(item.id)}
-                                className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-10 py-6 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-purple-100 transition-all active:scale-95 flex items-center justify-center gap-3 whitespace-nowrap"
-                            >
-                                <span>Upload Registry</span>
-                                <span className="text-lg">📄</span>
-                            </button>
+                            <div className="p-4 border-t border-gray-50 bg-gray-50/50">
+                                <button
+                                    onClick={() => handleComplete(item.id)}
+                                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-xl font-semibold shadow-sm shadow-purple-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
+                                >
+                                    <span>Upload Report</span>
+                                    <span>📄</span>
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
