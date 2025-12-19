@@ -28,12 +28,20 @@ export default function ConsultationView() {
 
     // Load Appointment & Patient
     useEffect(() => {
-        doctorApi.getAppointment(appointmentId).then(res => {
-            if (res.data) {
-                setPatient(res.data.patient);
-            }
-        });
-    }, [appointmentId]);
+        console.log("Fetching appointment:", appointmentId);
+        doctorApi.getAppointment(appointmentId)
+            .then(res => {
+                console.log("Fetch result:", res.data);
+                if (res.data) {
+                    setPatient(res.data.patient);
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load appointment", err);
+                alert("Failed to load appointment details. Please try again.");
+                navigate("/doctor/dashboard");
+            });
+    }, [appointmentId, navigate]);
 
     // Search Medicines Debounce
     useEffect(() => {
@@ -115,9 +123,11 @@ export default function ConsultationView() {
         setShowSummary(false);
     };
 
+    console.log("ConsultationView Render. Patient:", patient);
+
     if (!patient) return (
         <div className="min-h-screen flex items-center justify-center text-teal-600 animate-pulse font-bold text-xl">
-            Accessing Health Records...
+            Loading Patient Data (Debug Mode)...
         </div>
     );
 
@@ -134,10 +144,10 @@ export default function ConsultationView() {
 
                         <div className="p-10 space-y-8">
                             <div className="flex items-center gap-4 bg-teal-50/30 p-4 rounded-2xl border border-teal-50">
-                                <div className="h-12 w-12 bg-teal-600 text-white rounded-xl flex items-center justify-center font-bold text-xl italic">{patient.name.charAt(0)}</div>
+                                <div className="h-12 w-12 bg-teal-600 text-white rounded-xl flex items-center justify-center font-bold text-xl italic">{patient?.name?.charAt(0) || "?"}</div>
                                 <div>
                                     <p className="text-sm font-black text-teal-600 uppercase tracking-widest">Selected Patient</p>
-                                    <p className="text-lg font-bold text-gray-900">{patient.name}</p>
+                                    <p className="text-lg font-bold text-gray-900">{patient?.name || "Unknown"}</p>
                                 </div>
                             </div>
 
@@ -215,15 +225,15 @@ export default function ConsultationView() {
                         <div className="absolute top-0 left-0 w-2 h-full bg-teal-600 group-hover:w-3 transition-all"></div>
                         <div className="flex flex-col items-center text-center relative z-10">
                             <div className="h-24 w-24 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-4xl font-black italic mb-6 border-4 border-white shadow-xl shadow-teal-50">
-                                {patient.name.charAt(0)}
+                                {patient?.name?.charAt(0) || "?"}
                             </div>
-                            <h2 className="text-2xl font-black text-gray-900 tracking-tight">{patient.name}</h2>
-                            <p className="text-gray-400 font-bold text-sm mt-1">{patient.sex.toUpperCase()} • {patient.age} YEARS</p>
+                            <h2 className="text-2xl font-black text-gray-900 tracking-tight">{patient?.name || "Unknown Patient"}</h2>
+                            <p className="text-gray-400 font-bold text-sm mt-1">{(patient?.sex || "UNKNOWN").toUpperCase()} • {patient?.age || "?"} YEARS</p>
 
                             <div className="mt-8 w-full p-6 bg-slate-50 rounded-3xl space-y-4">
                                 <div className="flex justify-between items-center text-left">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Mobile</span>
-                                    <p className="font-bold text-gray-800 text-sm">{patient.phone || "UNLINKED"}</p>
+                                    <p className="font-bold text-gray-800 text-sm">{patient?.phone || "UNLINKED"}</p>
                                 </div>
                                 <div className="flex justify-between items-center text-left border-t border-gray-100 pt-4">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">History</span>
