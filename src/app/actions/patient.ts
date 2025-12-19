@@ -50,6 +50,21 @@ export async function bookAppointment(
 
         if (!finalPatientId) throw new Error("No patient ID provided")
 
+        // UPDATE PROFILE: If the user is currently "Guest" or incomplete, update them with the form details.
+        if (finalPatientId && guestDetails) {
+            const currentUser = await prisma.user.findUnique({ where: { id: finalPatientId } })
+            if (currentUser && (currentUser.name === "Guest" || !currentUser.age || !currentUser.sex)) {
+                await prisma.user.update({
+                    where: { id: finalPatientId },
+                    data: {
+                        name: guestDetails.name,
+                        age: parseInt(guestDetails.age),
+                        sex: guestDetails.sex
+                    }
+                })
+            }
+        }
+
         await prisma.appointment.create({
             data: {
                 patientId: finalPatientId,

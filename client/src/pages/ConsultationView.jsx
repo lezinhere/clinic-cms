@@ -132,264 +132,234 @@ export default function ConsultationView() {
     );
 
     return (
-        <div className="max-w-7xl mx-auto p-4 md:p-8 pb-32 relative">
-            {/* Review Modal */}
-            {showSummary && (
-                <div className="fixed inset-0 bg-slate-900/60 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white rounded-[3rem] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-100">
-                        <div className="p-8 border-b flex justify-between items-center bg-gray-50/50">
-                            <h2 className="text-2xl font-black text-gray-900 tracking-tight">Clinical Summary</h2>
-                            <button onClick={() => setShowSummary(false)} className="h-10 w-10 flex items-center justify-center bg-white rounded-full shadow-sm text-gray-400 hover:text-gray-600 transition-all">×</button>
-                        </div>
-
-                        <div className="p-10 space-y-8">
-                            <div className="flex items-center gap-4 bg-teal-50/30 p-4 rounded-2xl border border-teal-50">
-                                <div className="h-12 w-12 bg-teal-600 text-white rounded-xl flex items-center justify-center font-bold text-xl italic">{patient?.name?.charAt(0) || "?"}</div>
-                                <div>
-                                    <p className="text-sm font-black text-teal-600 uppercase tracking-widest">Selected Patient</p>
-                                    <p className="text-lg font-bold text-gray-900">{patient?.name || "Unknown"}</p>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-8">
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Diagnosis</p>
-                                    <p className="font-bold text-gray-800 border-l-4 border-teal-500 pl-3">{diagnosis}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Follow-up</p>
-                                    <p className="font-bold text-gray-800">{nextVisit || "Immediate"}</p>
-                                </div>
-                            </div>
-
-                            {prescriptions.length > 0 && (
-                                <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Prescription List</p>
-                                    <div className="space-y-2">
-                                        {prescriptions.map((p, i) => (
-                                            <div key={i} className="flex justify-between items-center p-3 bg-white border border-gray-100 rounded-xl shadow-sm">
-                                                <span className="font-bold text-gray-800 text-sm">{p.medicineName}</span>
-                                                <span className="text-[10px] font-black bg-teal-50 text-teal-600 px-3 py-1 rounded-lg uppercase">{p.dosage} • {p.period}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {labRequests.length > 0 && (
-                                <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Diagnostic Orders</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {labRequests.map((l, i) => (
-                                            <span key={i} className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-xs font-black uppercase tracking-wider border border-indigo-100">{l.testName}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="p-8 border-t bg-gray-50 flex gap-4">
-                            <button onClick={() => setShowSummary(false)} className="flex-1 py-4 bg-white text-gray-400 font-bold rounded-2xl border border-gray-200 hover:text-gray-600 transition-all">Revise Data</button>
-                            <button
-                                onClick={handleConfirmSubmit}
-                                disabled={loading}
-                                className="flex-[2] py-4 bg-teal-600 text-white font-black rounded-2xl shadow-xl shadow-teal-100 hover:bg-teal-700 transition-all uppercase tracking-widest text-sm"
-                            >
-                                {loading ? "Signing & Sending..." : "Authorize Submission"}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <header className="flex justify-between items-center mb-10 bg-white p-6 rounded-[2rem] shadow-xl shadow-gray-100/50 border border-gray-50">
-                <div className="flex items-center gap-4">
-                    <div className="h-14 w-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black italic shadow-lg shadow-teal-100">Rx</div>
+        <div className="min-h-screen bg-slate-50/50 pb-20">
+            {/* Header */}
+            <header className="bg-white border-b border-gray-200 sticky top-0 z-40 px-6 py-3 flex justify-between items-center shadow-sm">
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-2xl font-black text-gray-900 tracking-tight">Clinical Workspace</h1>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Session • APT-{appointmentId.slice(-4)}</p>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace</h1>
+                        <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
                 <button
                     onClick={() => navigate("/doctor/dashboard")}
-                    className="px-6 py-2 text-gray-400 hover:text-gray-900 font-bold transition-all text-sm uppercase tracking-widest"
+                    className="px-4 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg text-sm font-medium transition-all"
                 >
-                    Close Session
+                    Close & Exit
                 </button>
             </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* LEFT: Patient & Diagnosis */}
-                <div className="lg:col-span-4 space-y-8">
-                    <section className="bg-white p-8 rounded-[3rem] shadow-2xl border border-gray-50 relative overflow-hidden group">
-                        <div className="absolute top-0 left-0 w-2 h-full bg-teal-600 group-hover:w-3 transition-all"></div>
-                        <div className="flex flex-col items-center text-center relative z-10">
-                            <div className="h-24 w-24 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-4xl font-black italic mb-6 border-4 border-white shadow-xl shadow-teal-50">
-                                {patient?.name?.charAt(0) || "?"}
+            <main className="max-w-[1600px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Review Modal */}
+                {showSummary && (
+                    <div className="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+                            <div className="p-6 border-b flex justify-between items-center bg-gray-50">
+                                <h2 className="text-xl font-bold text-gray-900">Confirm Submission</h2>
+                                <button onClick={() => setShowSummary(false)} className="text-gray-400 hover:text-gray-600">✕</button>
                             </div>
-                            <h2 className="text-2xl font-black text-gray-900 tracking-tight">{patient?.name || "Unknown Patient"}</h2>
-                            <p className="text-gray-400 font-bold text-sm mt-1">{(patient?.sex || "UNKNOWN").toUpperCase()} • {patient?.age || "?"} YEARS</p>
+                            <div className="p-8 overflow-y-auto space-y-6">
+                                <div className="flex gap-6 p-4 bg-teal-50/50 rounded-xl border border-teal-100 items-center">
+                                    <div className="h-14 w-14 bg-white text-teal-700 rounded-full flex items-center justify-center font-bold text-xl border-2 border-teal-100 shadow-sm">
+                                        {patient?.name?.charAt(0) || "?"}
+                                    </div>
+                                    <div>
+                                        <div className="text-xs font-bold text-teal-600 uppercase tracking-wider">Patient</div>
+                                        <div className="text-lg font-bold text-gray-900">{patient?.name || "Unknown"}</div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-1">
+                                        <div className="text-xs font-bold text-gray-400 uppercase">Diagnosis</div>
+                                        <div className="font-semibold text-gray-800">{diagnosis}</div>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="text-xs font-bold text-gray-400 uppercase">Follow-up</div>
+                                        <div className="font-semibold text-gray-800">{nextVisit || "Not Scheduled"}</div>
+                                    </div>
+                                </div>
+                                {(prescriptions.length > 0 || labRequests.length > 0) && <div className="border-t border-gray-100 my-2"></div>}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {prescriptions.length > 0 && (
+                                        <div>
+                                            <div className="text-xs font-bold text-gray-400 uppercase mb-3">Prescriptions ({prescriptions.length})</div>
+                                            <div className="space-y-2">
+                                                {prescriptions.map((p, i) => (
+                                                    <div key={i} className="text-sm border-l-2 border-blue-400 pl-3 py-1">
+                                                        <span className="font-bold text-gray-700">{p.medicineName}</span>
+                                                        <span className="block text-xs text-gray-500">{p.dosage} for {p.period}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {labRequests.length > 0 && (
+                                        <div>
+                                            <div className="text-xs font-bold text-gray-400 uppercase mb-3">Lab Orders ({labRequests.length})</div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {labRequests.map((l, i) => (
+                                                    <span key={i} className="px-2 py-1 bg-purple-50 text-purple-700 rounded border border-purple-100 text-xs font-medium">{l.testName}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="p-6 border-t bg-gray-50 flex gap-3 justify-end">
+                                <button onClick={() => setShowSummary(false)} className="px-6 py-2.5 text-gray-600 font-medium hover:bg-gray-200 rounded-lg transition-colors">Back</button>
+                                <button onClick={handleConfirmSubmit} disabled={loading} className="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-lg shadow-sm hover:bg-teal-700 transition-all">
+                                    {loading ? "Submitting..." : "Confirm & Sign"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
-                            <div className="mt-8 w-full p-6 bg-slate-50 rounded-3xl space-y-4">
-                                <div className="flex justify-between items-center text-left">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Mobile</span>
-                                    <p className="font-bold text-gray-800 text-sm">{patient?.phone || "UNLINKED"}</p>
+                {/* LEFT COLUMN: Patient Info & Findings */}
+                <div className="lg:col-span-4 space-y-6">
+                    {/* Patient Card */}
+                    <section className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden">
+                        <div className="h-2 bg-teal-500 w-full"></div>
+                        <div className="p-6">
+                            <div className="flex items-start gap-4 mb-6">
+                                <div className="h-16 w-16 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg shadow-teal-100">
+                                    {patient?.name?.charAt(0) || "?"}
                                 </div>
-                                <div className="flex justify-between items-center text-left border-t border-gray-100 pt-4">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">History</span>
-                                    <button
-                                        onClick={() => navigate(`/patient/history?patientId=${patient.id}`)}
-                                        className="bg-white px-4 py-1.5 border border-gray-200 rounded-full text-[10px] font-black text-teal-600 hover:bg-teal-600 hover:text-white transition-all shadow-sm"
-                                    >
-                                        VIEW RECORDS
-                                    </button>
+                                <div>
+                                    <h2 className="text-xl font-bold text-gray-900">{patient?.name || "Unknown Patient"}</h2>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-bold rounded uppercase">{(patient?.sex || "UNK").substring(0, 1)}</span>
+                                        <span className="text-sm font-medium text-gray-500">{patient?.age || "?"} Years</span>
+                                    </div>
+                                    <div className="text-sm text-gray-500 mt-1 font-mono">{patient?.phone || "No Phone"}</div>
                                 </div>
                             </div>
+                            <button
+                                onClick={() => navigate(`/patient/history?patientId=${patient.id}`)}
+                                className="w-full py-2.5 border border-gray-200 text-gray-600 font-semibold rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all text-sm flex items-center justify-center gap-2"
+                            >
+                                <span>View History</span>
+                                <span className="text-gray-400">→</span>
+                            </button>
                         </div>
                     </section>
 
-                    <section className="bg-white p-8 rounded-[3.5rem] shadow-xl shadow-gray-100 border border-gray-50 space-y-6">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="h-8 w-8 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xs shadow-sm">📝</div>
-                            <h3 className="font-black text-gray-900 uppercase tracking-widest text-sm">Findings</h3>
-                        </div>
-                        <div className="space-y-5">
+                    {/* Clinical Findings */}
+                    <section className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 flex flex-col h-fit">
+                        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Clinical Findings
+                        </h3>
+                        <div className="space-y-4">
                             <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Clinical Diagnosis</label>
+                                <label className="block text-xs font-semibold text-gray-500 mb-1.5 ml-1">Diagnosis</label>
                                 <input
-                                    className="w-full p-5 bg-gray-50 border-2 border-transparent focus:border-teal-500 rounded-[2rem] outline-none transition-all font-bold text-gray-800 placeholder:text-gray-300 shadow-inner"
-                                    placeholder="e.g. Acute Gastritis"
+                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 rounded-xl outline-none transition-all font-medium text-gray-900"
+                                    placeholder="e.g. Viral Fever"
                                     value={diagnosis}
                                     onChange={e => setDiagnosis(e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Follow-up Date</label>
-                                <input
-                                    type="date"
-                                    className="w-full p-5 bg-gray-50 border-2 border-transparent focus:border-teal-500 rounded-[2rem] outline-none transition-all font-bold text-teal-700 shadow-inner"
-                                    value={nextVisit}
-                                    onChange={e => setNextVisit(e.target.value)}
+                                <label className="block text-xs font-semibold text-gray-500 mb-1.5 ml-1">Notes / Advice</label>
+                                <textarea
+                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 rounded-xl outline-none transition-all h-32 resize-none font-medium text-gray-900 text-sm leading-relaxed"
+                                    placeholder="Patient complaints, internal notes..."
+                                    value={notes}
+                                    onChange={e => setNotes(e.target.value)}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Physician Advice</label>
-                                <textarea
-                                    className="w-full p-6 bg-gray-50 border-2 border-transparent focus:border-teal-500 rounded-[2.5rem] outline-none transition-all h-32 resize-none font-medium text-gray-700 shadow-inner"
-                                    placeholder="Rest, hydration, avoid oily food..."
-                                    value={notes}
-                                    onChange={e => setNotes(e.target.value)}
+                                <label className="block text-xs font-semibold text-gray-500 mb-1.5 ml-1">Next Visit</label>
+                                <input
+                                    type="date"
+                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 rounded-xl outline-none transition-all font-medium text-gray-700"
+                                    value={nextVisit}
+                                    onChange={e => setNextVisit(e.target.value)}
                                 />
                             </div>
                         </div>
                     </section>
                 </div>
 
-                {/* RIGHT: Prescriptions & Labs */}
-                <div className="lg:col-span-8 space-y-8">
-                    <section className="bg-white p-10 rounded-[4rem] shadow-2xl border border-gray-50 min-h-[500px] flex flex-col">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-blue-100">💊</div>
-                                <h3 className="text-2xl font-black text-gray-900 tracking-tight">Active Prescription</h3>
-                            </div>
+                {/* RIGHT COLUMN: Rx & Labs */}
+                <div className="lg:col-span-8 flex flex-col gap-6">
+                    {/* Prescription Section */}
+                    <section className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 flex-1">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Prescriptions
+                            </h3>
+                            <span className="text-xs font-medium text-gray-400">{prescriptions.length} Items</span>
                         </div>
 
-                        {/* Medicine Search */}
-                        <div className="relative mb-10">
-                            <div className="relative group">
+                        {/* Search */}
+                        <div className="relative mb-6 z-20">
+                            <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
                                 <input
-                                    className="w-full p-7 pl-16 bg-slate-50 border-2 border-transparent focus:border-blue-500 rounded-[2.5rem] outline-none transition-all font-bold text-lg text-gray-800 shadow-inner placeholder:text-gray-300"
-                                    placeholder="Catalog search (e.g. Paracetamol)..."
+                                    className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl outline-none transition-all font-medium text-gray-900 shadow-sm"
+                                    placeholder="Search medicines..."
                                     value={medQuery}
                                     onChange={e => setMedQuery(e.target.value)}
                                 />
-                                <span className="absolute left-7 top-1/2 -translate-y-1/2 text-2xl group-focus-within:scale-110 transition-transform">🔍</span>
+                                {medQuery && !medSuggestions.length && (
+                                    <button
+                                        onClick={() => addMedicine(medQuery)}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition"
+                                    >
+                                        ADD NEW
+                                    </button>
+                                )}
                             </div>
-
                             {medSuggestions.length > 0 && (
-                                <div className="absolute top-full mt-4 left-0 right-0 bg-white rounded-[2.5rem] shadow-2xl border border-blue-50 z-50 overflow-hidden animate-in slide-in-from-top-4 duration-300">
+                                <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden max-h-60 overflow-y-auto">
                                     {medSuggestions.map(m => (
-                                        <div
-                                            key={m.id}
-                                            onClick={() => addMedicine(m.name)}
-                                            className="px-8 py-5 hover:bg-blue-50 cursor-pointer flex justify-between items-center group/item transition-colors"
-                                        >
-                                            <span className="font-bold text-gray-700 tracking-tight">{m.name}</span>
-                                            <span className="text-blue-500 text-[10px] font-black uppercase opacity-0 group-hover/item:opacity-100 transition-all tracking-widest">Select Item</span>
+                                        <div key={m.id} onClick={() => addMedicine(m.name)} className="px-4 py-3 hover:bg-blue-50 cursor-pointer text-sm font-medium text-gray-700 border-b border-gray-50 last:border-0 transition-colors">
+                                            {m.name}
                                         </div>
                                     ))}
                                 </div>
                             )}
-                            {medQuery.length > 0 && medSuggestions.length === 0 && (
-                                <button
-                                    onClick={() => addMedicine(medQuery)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 px-6 py-3 bg-blue-600 text-white text-[10px] font-black rounded-3xl hover:bg-blue-700 transition-all uppercase tracking-widest shadow-lg shadow-blue-100"
-                                >
-                                    Draft New Rx
-                                </button>
-                            )}
                         </div>
 
                         {/* Table */}
-                        <div className="flex-1 overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead className="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">
+                        <div className="overflow-hidden rounded-xl border border-gray-100">
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
                                     <tr>
-                                        <th className="pb-6 px-4">Identifier</th>
-                                        <th className="pb-6 px-4">Medication</th>
-                                        <th className="pb-6 px-4">Regimen</th>
-                                        <th className="pb-6 px-4">Cycle</th>
-                                        <th className="pb-6 px-4"></th>
+                                        <th className="px-4 py-3">Medicine</th>
+                                        <th className="px-4 py-3 w-32">Full Cycle</th>
+                                        <th className="px-4 py-3 w-32">Days</th>
+                                        <th className="px-4 py-3 w-10"></th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-50">
+                                <tbody className="divide-y divide-gray-100">
                                     {prescriptions.map((p, idx) => (
-                                        <tr key={idx} className="group hover:bg-slate-50/50 transition-colors">
-                                            <td className="py-6 px-4">
-                                                <div className="h-8 w-8 rounded-xl bg-gray-50 flex items-center justify-center font-black text-[10px] text-gray-400 border border-gray-100">
-                                                    0{idx + 1}
-                                                </div>
-                                            </td>
-                                            <td className="py-6 px-4 font-black text-gray-800">{p.medicineName}</td>
-                                            <td className="py-6 px-4">
+                                        <tr key={idx} className="group hover:bg-gray-50 transition-colors">
+                                            <td className="px-4 py-3 font-bold text-gray-800">{p.medicineName}</td>
+                                            <td className="px-4 py-3">
                                                 <input
-                                                    className="w-full bg-slate-100/50 p-3 rounded-xl border border-transparent focus:border-blue-300 outline-none text-xs font-bold text-blue-700 transition-all"
+                                                    className="w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none text-center font-medium"
                                                     value={p.dosage}
-                                                    onChange={e => {
-                                                        const newPs = [...prescriptions];
-                                                        newPs[idx].dosage = e.target.value;
-                                                        setPrescriptions(newPs);
-                                                    }}
+                                                    onChange={e => { const n = [...prescriptions]; n[idx].dosage = e.target.value; setPrescriptions(n); }}
                                                 />
                                             </td>
-                                            <td className="py-6 px-4">
+                                            <td className="px-4 py-3">
                                                 <input
-                                                    className="w-full bg-slate-100/50 p-3 rounded-xl border border-transparent focus:border-blue-300 outline-none text-xs font-bold text-blue-700 transition-all"
+                                                    className="w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none text-center font-medium"
                                                     value={p.period}
-                                                    onChange={e => {
-                                                        const newPs = [...prescriptions];
-                                                        newPs[idx].period = e.target.value;
-                                                        setPrescriptions(newPs);
-                                                    }}
+                                                    onChange={e => { const n = [...prescriptions]; n[idx].period = e.target.value; setPrescriptions(n); }}
                                                 />
                                             </td>
-                                            <td className="py-6 px-4 text-right">
-                                                <button
-                                                    onClick={() => removeMedicine(idx)}
-                                                    className="h-10 w-10 flex items-center justify-center rounded-full text-gray-200 hover:text-red-500 hover:bg-red-50 transition-all font-bold text-2xl"
-                                                >
-                                                    ×
-                                                </button>
+                                            <td className="px-4 py-3 text-right">
+                                                <button onClick={() => removeMedicine(idx)} className="text-gray-300 hover:text-red-500 text-lg transition-colors">×</button>
                                             </td>
                                         </tr>
                                     ))}
                                     {prescriptions.length === 0 && (
                                         <tr>
-                                            <td colSpan={5} className="py-20 text-center">
-                                                <div className="text-4xl mb-4 opacity-20">🏥</div>
-                                                <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px]">Awaiting Prescription Input</p>
-                                            </td>
+                                            <td colSpan={4} className="py-12 text-center text-gray-400 italic">No medicines added yet.</td>
                                         </tr>
                                     )}
                                 </tbody>
@@ -397,78 +367,56 @@ export default function ConsultationView() {
                         </div>
                     </section>
 
-                    <section className="bg-white p-10 rounded-[4rem] shadow-xl shadow-gray-100 border border-gray-50">
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="h-10 w-10 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl border border-purple-100">🧪</div>
-                            <h3 className="text-xl font-black text-gray-900 tracking-tight uppercase tracking-widest text-sm">Diagnostic Routing</h3>
-                        </div>
+                    {/* Labs & Action */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <section className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 flex flex-col">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span> Lab Orders
+                            </h3>
+                            <div className="relative mb-4">
+                                <input
+                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-100 rounded-xl outline-none transition-all text-sm font-medium"
+                                    placeholder="Add test..."
+                                    value={labQuery}
+                                    onChange={e => setLabQuery(e.target.value)}
+                                />
+                                {labSuggestions.length > 0 && (
+                                    <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-20">
+                                        {labSuggestions.map(l => (
+                                            <div key={l.id} onClick={() => addLab(l.name)} className="px-4 py-2.5 hover:bg-purple-50 cursor-pointer text-sm font-medium text-gray-700 transition-colors">
+                                                {l.name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {labQuery && !labSuggestions.length && <button onClick={() => addLab(labQuery)} className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-purple-600 px-2 py-1 bg-purple-50 rounded">ADD</button>}
+                            </div>
+                            <div className="flex flex-wrap gap-2 content-start flex-1">
+                                {labRequests.map((l, i) => (
+                                    <span key={i} className="px-3 py-1 bg-purple-50 text-purple-700 rounded-lg text-xs font-bold border border-purple-100 flex items-center gap-2">
+                                        {l.testName}
+                                        <button onClick={() => { const n = [...labRequests]; n.splice(i, 1); setLabRequests(n) }} className="hover:text-purple-900">×</button>
+                                    </span>
+                                ))}
+                            </div>
+                        </section>
 
-                        <div className="relative mb-6">
-                            <input
-                                className="w-full p-6 bg-slate-50 border-2 border-transparent focus:border-purple-500 rounded-[2.5rem] outline-none transition-all font-bold text-gray-800 placeholder:text-gray-300 shadow-inner"
-                                placeholder="Request a new clinical test..."
-                                value={labQuery}
-                                onChange={e => setLabQuery(e.target.value)}
-                            />
-
-                            {labSuggestions.length > 0 && (
-                                <div className="absolute top-full mt-4 left-0 right-0 bg-white rounded-[2rem] shadow-2xl border border-purple-50 z-50 overflow-hidden animate-in zoom-in duration-200">
-                                    {labSuggestions.map(l => (
-                                        <div
-                                            key={l.id}
-                                            onClick={() => addLab(l.name)}
-                                            className="px-8 py-4 hover:bg-purple-50 cursor-pointer flex justify-between items-center transition-colors"
-                                        >
-                                            <span className="font-bold text-gray-700 text-sm tracking-tight">{l.name}</span>
-                                            <span className="text-purple-500 text-[9px] font-black uppercase tracking-widest">Add Order</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            {labQuery.length > 0 && labSuggestions.length === 0 && (
-                                <button
-                                    onClick={() => addLab(labQuery)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 px-6 py-2.5 bg-purple-600 text-white text-[9px] font-black rounded-3xl hover:bg-purple-700 transition-all uppercase tracking-widest"
-                                >
-                                    + Custom Lab
-                                </button>
-                            )}
-                        </div>
-
-                        <div className="flex flex-wrap gap-3">
-                            {labRequests.map((l, idx) => (
-                                <span key={idx} className="group inline-flex items-center gap-3 px-5 py-2.5 bg-purple-50 text-purple-700 rounded-full text-[10px] font-black uppercase tracking-widest border border-purple-100 shadow-sm transition-all hover:bg-purple-100">
-                                    {l.testName}
-                                    <button
-                                        onClick={() => {
-                                            const newL = [...labRequests];
-                                            newL.splice(idx, 1);
-                                            setLabRequests(newL);
-                                        }}
-                                        className="text-purple-300 group-hover:text-purple-900 font-bold transition-colors"
-                                    >
-                                        ×
-                                    </button>
-                                </span>
-                            ))}
-                            {labRequests.length === 0 && <p className="text-gray-300 italic text-xs font-medium py-2">No active laboratory orders.</p>}
-                        </div>
-                    </section>
-
-                    <div className="pt-4 animate-in slide-in-from-bottom-8 duration-500">
-                        <button
-                            onClick={handlePreSubmit}
-                            disabled={loading}
-                            className="w-full py-7 bg-gradient-to-r from-teal-600 via-teal-700 to-indigo-700 hover:from-teal-700 hover:to-indigo-800 text-white font-black text-xl rounded-[3rem] shadow-2xl shadow-teal-100 transition-all transform hover:-translate-y-1 active:scale-95 uppercase tracking-[0.1em]"
-                        >
-                            Authorize Consultation Registry
-                        </button>
-                        <p className="text-center text-[10px] font-black text-gray-300 mt-6 uppercase tracking-widest">
-                            Official Digital Signature Required in Next Step
-                        </p>
+                        <section className="flex flex-col justify-end">
+                            <button
+                                onClick={handlePreSubmit}
+                                disabled={loading}
+                                className="w-full py-4 bg-gray-900 hover:bg-gray-800 text-white font-bold text-lg rounded-2xl shadow-xl shadow-gray-200 transition-all transform active:scale-95 flex items-center justify-center gap-2"
+                            >
+                                <span>Complete Session</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </button>
+                            <p className="text-center text-xs font-medium text-gray-400 mt-3">Double-check all entries before signing.</p>
+                        </section>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 }
