@@ -50,18 +50,21 @@ export async function bookAppointment(
 
         if (!finalPatientId) throw new Error("No patient ID provided")
 
-        // UPDATE PROFILE: If the user is currently "Guest" or incomplete, update them with the form details.
+        // ALWAYS UPDATE PROFILE: Sync user profile with the latest booking details.
+        // This fixes the "Guest" issue by overwriting placeholder data with the real form data.
         if (finalPatientId && guestDetails) {
-            const currentUser = await prisma.user.findUnique({ where: { id: finalPatientId } })
-            if (currentUser && (currentUser.name === "Guest" || !currentUser.age || !currentUser.sex)) {
+            try {
                 await prisma.user.update({
                     where: { id: finalPatientId },
                     data: {
                         name: guestDetails.name,
-                        age: parseInt(guestDetails.age),
+                        age: parseInt(String(guestDetails.age)), // Ensure string conversion before parsing
                         sex: guestDetails.sex
                     }
                 })
+            } catch (updateError) {
+                console.error("Failed to sync profile:", updateError)
+                // Continue with booking even if profile update fails (though it shouldn't)
             }
         }
 
@@ -78,10 +81,6 @@ export async function bookAppointment(
 
         // Send Booking Confirmation SMS
         if (guestDetails?.phone || finalPatientId) {
-            // We need phone number. If guestDetails provided, use it. If logged in (finalPatientId), we might need to fetch user.
-            // But we have 'patientId' arg. If patientId is provided, we didn't fetch the user object yet.
-            // We should fetch patient phone if not available from guestDetails.
-
             let targetPhone = guestDetails?.phone
             if (!targetPhone) {
                 const p = await prisma.user.findUnique({ where: { id: finalPatientId } })
@@ -89,7 +88,24 @@ export async function bookAppointment(
             }
 
             if (targetPhone) {
-                const msg = `Appointment Confirmed! Dr. ID: ${doctorId} on ${date.toLocaleDateString()}. Thank you for choosing ClinicCMS.`
+                // Fetch Doctor Name
+                const doctor = await prisma.user.findUnique({
+                    where: { id: doctorId },
+                    select: { name: true }
+                })
+                const doctorName = doctor ? doctor.name : "the Doctor"
+
+                // Format Date & Time
+                const dateTimeStr = date.toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                })
+
+                const msg = `Appointment Confirmed!\nDr. ${doctorName}\n${dateTimeStr}.\nThank you for choosing ClinicCMS`
                 await sendSMS(targetPhone, msg)
             }
         }

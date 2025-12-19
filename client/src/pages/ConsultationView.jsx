@@ -117,7 +117,9 @@ export default function ConsultationView() {
                 alert(`Failed to submit: ${res.data.error}`);
             }
         } catch (err) {
-            alert("Connection error during submission");
+            console.error("Submission error:", err);
+            const errMsg = err.response?.data?.error || err.message || "Unknown connection error";
+            alert(`Submission Failed: ${errMsg}`);
         }
         setLoading(false);
         setShowSummary(false);
