@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # Generate Prisma Client
-RUN npx prisma generate
+RUN ./node_modules/.bin/prisma generate
 
 EXPOSE 5000
 
