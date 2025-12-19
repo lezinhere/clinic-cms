@@ -277,19 +277,20 @@ app.post('/api/doctor/consult/submit', async (req, res) => {
             }
 
             // 4. Update Appointment
-            where: { id: appointmentId },
-            data: { status: "COMPLETED" },
-        });
-    }, {
-        maxWait: 5000, // default: 2000
+            await tx.appointment.update({
+                where: { id: appointmentId },
+                data: { status: "COMPLETED" },
+            });
+        }, {
+            maxWait: 5000, // default: 2000
             timeout: 20000 // default: 5000
-    });
+        });
 
-res.json({ success: true });
+        res.json({ success: true });
     } catch (error) {
-    console.error("Consultation submit CRITICAL error:", error);
-    res.status(500).json({ success: false, error: error.message || "Server Transaction Failed" });
-}
+        console.error("Consultation submit CRITICAL error:", error);
+        res.status(500).json({ success: false, error: error.message || "Server Transaction Failed" });
+    }
 });
 
 // --- PATIENT ROUTES ---
