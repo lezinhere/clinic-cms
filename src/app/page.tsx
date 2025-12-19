@@ -22,12 +22,7 @@ export default function PatientLandingPage() {
           Care<span className="text-teal-500">Connect</span>
         </div>
         <div className="flex gap-6 items-center">
-          <button
-            onClick={() => router.push("/care-connect/login")}
-            className="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            Provider Login
-          </button>
+          {/* Provider Login Removed */}
           <button
             onClick={() => router.push("/patient/login")}
             className="px-5 py-2 rounded-full border border-teal-100 text-teal-700 font-medium hover:bg-teal-50 transition-colors"
