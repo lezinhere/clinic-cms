@@ -34,11 +34,12 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
             const doctorAppointments = await tx.appointment.findMany({ where: { doctorId: id } });
             const patientAppointments = await tx.appointment.findMany({ where: { patientId: id } });
 
+            // deduplicate IDs just in case
             const allAppointments = [...doctorAppointments, ...patientAppointments];
+            // unique IDs
+            const apptIds = Array.from(new Set(allAppointments.map(a => a.id)));
 
-            if (allAppointments.length > 0) {
-                const apptIds = allAppointments.map(a => a.id);
-
+            if (apptIds.length > 0) {
                 // Find linked consultations
                 const consultations = await tx.consultation.findMany({
                     where: { appointmentId: { in: apptIds } }
@@ -97,11 +98,17 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
             await tx.user.delete({
                 where: { id }
             });
+        }, {
+            maxWait: 5000,
+            timeout: 20000
         });
 
         return NextResponse.json({ success: true });
     } catch (error: any) {
         console.error("API DELETE Staff Error:", error);
-        return NextResponse.json({ success: false, error: "Failed to delete staff due to data dependencies." }, { status: 500 });
+        return NextResponse.json({
+            success: false,
+            error: `Delete Failed: ${error.message || "Unknown error"}`
+        }, { status: 500 });
     }
 }
