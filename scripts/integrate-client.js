@@ -10,7 +10,7 @@ console.log('🚀 Starting Client Integration...');
 try {
     // 1. Install Client Dependencies
     console.log('📦 Installing client dependencies...');
-    execSync('npm install', { cwd: clientDir, stdio: 'inherit' });
+    execSync('npm install --include=dev', { cwd: clientDir, stdio: 'inherit' });
 
     // 2. Build Client
     console.log('🛠️  Building Vite Client...');
