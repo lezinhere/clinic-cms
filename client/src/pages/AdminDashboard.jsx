@@ -144,7 +144,7 @@ export default function AdminDashboard() {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-gray-50/80 text-gray-400 text-[10px] uppercase font-bold tracking-widest border-b">
                             <tr>
-                                <th className="px-6 py-4">Display ID</th>
+                                <th className="px-6 py-4">STAFF ID (VERIFIED)</th>
                                 <th className="px-6 py-4">Name & Specialty</th>
                                 <th className="px-6 py-4">Department</th>
                                 <th className="px-6 py-4">Security PIN</th>
