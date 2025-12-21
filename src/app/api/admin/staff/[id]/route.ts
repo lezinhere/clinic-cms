@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
 // PUT /api/admin/staff/[id] - Update staff
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const { id } = params;
+        const { id } = await params;
         const data = await req.json();
 
         const updatedUser = await prisma.user.update({
@@ -25,9 +25,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE /api/admin/staff/[id] - Delete staff with Cascade
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const { id } = params;
+        const { id } = await params;
 
         await prisma.$transaction(async (tx) => {
             // 1. Gather all linked appointments (Doctor OR Patient role)
