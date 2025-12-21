@@ -96,7 +96,8 @@ export default function AdminDashboard() {
                 const res = await adminApi.deleteStaffMember(id);
                 if (res.data.success) loadStaff();
             } catch (err) {
-                alert("Failed to delete staff member");
+                console.error("Delete error:", err);
+                alert(err.response?.data?.error || "Failed to delete staff member");
             }
         }
     };
