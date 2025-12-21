@@ -406,11 +406,14 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.$transaction(async (tx) => {
-            // 1. If DOCTOR: Cleanup Appointments & Linked Data
+            // 1. Gather all linked appointments (Doctor OR Patient role)
             const doctorAppointments = await tx.appointment.findMany({ where: { doctorId: id } });
+            const patientAppointments = await tx.appointment.findMany({ where: { patientId: id } });
 
-            if (doctorAppointments.length > 0) {
-                const apptIds = doctorAppointments.map(a => a.id);
+            const allAppointments = [...doctorAppointments, ...patientAppointments];
+
+            if (allAppointments.length > 0) {
+                const apptIds = allAppointments.map(a => a.id);
 
                 // Find linked consultations
                 const consultations = await tx.consultation.findMany({
