@@ -403,11 +403,77 @@ app.put('/api/admin/staff/:id', async (req, res) => {
 });
 
 app.delete('/api/admin/staff/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        await prisma.user.delete({ where: { id: req.params.id } });
+        await prisma.$transaction(async (tx) => {
+            // 1. If DOCTOR: Cleanup Appointments & Linked Data
+            const doctorAppointments = await tx.appointment.findMany({ where: { doctorId: id } });
+
+            if (doctorAppointments.length > 0) {
+                const apptIds = doctorAppointments.map(a => a.id);
+
+                // Find linked consultations
+                const consultations = await tx.consultation.findMany({
+                    where: { appointmentId: { in: apptIds } }
+                });
+                const consultIds = consultations.map(c => c.id);
+
+                if (consultIds.length > 0) {
+                    // Delete Lab Requests linked to these consultations
+                    await tx.labRequest.deleteMany({
+                        where: { consultationId: { in: consultIds } }
+                    });
+
+                    // Delete Prescriptions linked to these consultations
+                    const prescriptions = await tx.prescription.findMany({
+                        where: { consultationId: { in: consultIds } }
+                    });
+                    const presIds = prescriptions.map(p => p.id);
+
+                    if (presIds.length > 0) {
+                        // Delete Prescription Items first
+                        await tx.prescriptionItem.deleteMany({
+                            where: { prescriptionId: { in: presIds } }
+                        });
+                        // Delete Prescriptions
+                        await tx.prescription.deleteMany({
+                            where: { id: { in: presIds } }
+                        });
+                    }
+
+                    // Delete Consultations
+                    await tx.consultation.deleteMany({
+                        where: { id: { in: consultIds } }
+                    });
+                }
+
+                // Delete Appointments
+                await tx.appointment.deleteMany({
+                    where: { id: { in: apptIds } }
+                });
+            }
+
+            // 2. If PHARMACY/LAB: Nullify references in processed items
+            // Unlink dispensed prescriptions
+            await tx.prescription.updateMany({
+                where: { dispensedById: id },
+                data: { dispensedById: null }
+            });
+
+            // Unlink completed lab reports
+            await tx.labRequest.updateMany({
+                where: { technicianId: id },
+                data: { technicianId: null }
+            });
+
+            // 3. Finally, Delete the User
+            await tx.user.delete({ where: { id } });
+        });
+
         res.json({ success: true });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        console.error("Delete Staff Error:", error);
+        res.status(500).json({ success: false, error: "Failed to delete staff due to data dependencies." });
     }
 });
 
