@@ -200,6 +200,7 @@ export default function DoctorDashboard() {
                                             </div>
                                             <div>
                                                 <h3 className="font-bold text-gray-900">{apt.patientName || apt.patient.name}</h3>
+                                                <p className="text-xs text-red-500 font-mono">DEBUG: Sent: {apt.patientName || 'NULL'} | Account: {apt.patient.name}</p>
                                                 <p className="text-sm text-gray-500">
                                                     {apt.patientAge || apt.patient.age} yrs • {apt.patientGender || apt.patient.sex} • <span className="font-mono bg-teal-50 text-teal-700 px-2 rounded">{apt.tokenNumber ? `Token #${apt.tokenNumber}` : 'No Token'}</span>
                                                 </p>
