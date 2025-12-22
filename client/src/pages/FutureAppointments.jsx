@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { doctorApi } from "../api/doctor";
 
@@ -67,7 +68,13 @@ export default function FutureAppointments() {
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div className="flex gap-2">
+                                <Link
+                                    to={`/doctor/consult/${apt.id}`}
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-md shadow-blue-200 transition-all active:scale-95"
+                                >
+                                    Start Consult
+                                </Link>
                                 <button
                                     onClick={() => handleCancel(apt.id)}
                                     className="px-4 py-2 border border-red-100 text-red-600 hover:bg-red-50 rounded-lg text-sm font-bold transition-colors"
