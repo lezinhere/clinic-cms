@@ -182,6 +182,25 @@ app.get('/api/doctor/appointment/:id', async (req, res) => {
     }
 });
 
+// Cancel Appointment (PATCH)
+app.patch('/api/doctor/appointment/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status) return res.status(400).json({ error: "Missing status" });
+
+        const appointment = await prisma.appointment.update({
+            where: { id },
+            data: { status },
+        });
+        res.json(appointment);
+    } catch (error) {
+        console.error("API PATCH Doctor Appointment Error:", error);
+        res.status(500).json({ error: "Failed to update" });
+    }
+});
+
 app.get('/api/doctor/medicines/search', async (req, res) => {
     const { query } = req.query;
     if (!query) return res.json([]);
