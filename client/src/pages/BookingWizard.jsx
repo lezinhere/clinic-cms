@@ -296,9 +296,15 @@ export default function BookingWizard() {
                             </div>
                         </div>        <button
                             onClick={() => navigate("/patient/login")}
-                            className="w-full py-4 bg-teal-600 text-white rounded-2xl hover:bg-teal-700 font-bold shadow-xl shadow-teal-100 transition-all active:scale-95"
+                            className="w-full py-4 bg-teal-600 text-white rounded-2xl hover:bg-teal-700 font-bold shadow-xl shadow-teal-100 transition-all active:scale-95 mb-3"
                         >
                             Monitor Appointment Progress
+                        </button>
+                        <button
+                            onClick={() => navigate("/")}
+                            className="w-full py-4 bg-white text-gray-500 rounded-2xl hover:bg-gray-50 font-bold border-2 border-gray-100 transition-all active:scale-95"
+                        >
+                            Back to Home
                         </button>
                     </div>
                 );
