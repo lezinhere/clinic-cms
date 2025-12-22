@@ -13,12 +13,16 @@ try {
     execSync('npm install --include=dev', { cwd: clientDir, stdio: 'inherit' });
 
     // 2. Build Client
-    console.log('🛠️  Building Vite Client...');
+    console.log('🛠️  Building Vite Client (Clean Build)...');
+    const distDir = path.join(clientDir, 'dist');
+    if (fs.existsSync(distDir)) {
+        fs.rmSync(distDir, { recursive: true, force: true });
+    }
     execSync('npm run build', { cwd: clientDir, stdio: 'inherit' });
 
     // 3. Move files to Public
     console.log('📂 Moving build artifacts to public folder...');
-    const distDir = path.join(clientDir, 'dist');
+    // const distDir = path.join(clientDir, 'dist'); // Already defined above
 
     if (!fs.existsSync(distDir)) {
         throw new Error('Client build failed! dist folder not found.');
