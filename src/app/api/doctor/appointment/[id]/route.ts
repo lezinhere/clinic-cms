@@ -18,7 +18,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
-        const { status } = await req.json();
+        if (!id) {
+            return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+        }
+
+        const body = await req.json(); // Safe parse
+        const { status } = body;
+
+        if (!status) {
+            return NextResponse.json({ error: "Missing Status" }, { status: 400 });
+        }
 
         const appointment = await prisma.appointment.update({
             where: { id },
@@ -26,8 +35,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         });
 
         return NextResponse.json(appointment);
-    } catch (error) {
+    } catch (error: any) {
         console.error("API PATCH Doctor Appointment Error:", error);
-        return NextResponse.json({ error: "Failed to update" }, { status: 500 });
+        return NextResponse.json({
+            error: "Failed to update",
+            details: error?.message || "Unknown error"
+        }, { status: 500 });
     }
 }

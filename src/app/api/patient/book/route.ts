@@ -54,8 +54,21 @@ export async function POST(req: Request) {
                 slotTime: body.slotTime,
                 tokenNumber: tokenNumber,
                 status: "PENDING"
+            },
+            include: {
+                patient: true,
+                doctor: true
             }
         });
+
+        // Send SMS
+        try {
+            const { sendSMS } = require('@/lib/sms'); // Dynamic import to avoid build issues if lib missing
+            const message = `Booking Confirmed!\nToken: ${tokenNumber}\nDoctor: ${appointment.doctor.name}\nTime: ${body.slotTime}\nDate: ${new Date(date).toLocaleDateString()}`;
+            await sendSMS(appointment.patient.phone, message);
+        } catch (smsError) {
+            console.error("Failed to send booking SMS:", smsError);
+        }
 
         return NextResponse.json({ success: true, appointment });
     } catch (error: any) {
