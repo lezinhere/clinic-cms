@@ -39,7 +39,12 @@ export default function BookingWizard() {
     };
 
     useEffect(() => {
-        patientApi.getDoctors().then(res => setDoctors(res.data));
+        patientApi.getDoctors()
+            .then(res => setDoctors(res.data))
+            .catch(err => {
+                console.error("Failed to load doctors", err);
+                alert("Failed to load doctors: " + (err.response?.data?.error || err.message));
+            });
         if (user && user.role === "PATIENT") {
             setFormData(prev => ({
                 ...prev,
