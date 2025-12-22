@@ -13,8 +13,14 @@ export async function POST(req: Request) {
             create: { phone, code, expiresAt }
         });
 
-        // In a real app, integrate SMS service here.
-        // For now, we simulate.
+        // Send Real SMS
+        try {
+            const { sendSMS } = require('@/lib/sms');
+            await sendSMS(phone, `Your ClinicCMS Verification Code is: ${code}`);
+        } catch (smsError) {
+            console.error("OTP SMS Failed:", smsError);
+        }
+
         console.log(`[SMS SIMULATION] To ${phone}: Your ClinicCMS OTP is ${code}`);
 
         return NextResponse.json({ success: true });
