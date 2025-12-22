@@ -14,3 +14,30 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+/* Print Styles for Prescriptions */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-section,
+  #printable-section * {
+    visibility: visible;
+  }
+
+  #printable-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+    box-shadow: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

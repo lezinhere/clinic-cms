@@ -41,7 +41,7 @@ export default function AdminDashboard() {
     }
 
     const resetForm = () => {
-        setFormData({ name: "", role: "DOCTOR", specialization: "", passcode: "", displayId: "" });
+        setFormData({ name: "", role: "DOCTOR", specialization: "", passcode: "", displayId: "", startHour: "09:00", endHour: "17:00" });
         setEditingStaff(null);
         setFormError("");
     };
@@ -58,7 +58,9 @@ export default function AdminDashboard() {
             role: s.role,
             specialization: s.specialization || "",
             passcode: s.passcode || "",
-            displayId: s.displayId || ""
+            displayId: s.displayId || "",
+            startHour: s.startHour || "09:00",
+            endHour: s.endHour || "17:00"
         });
         setModalOpen(true);
     };
@@ -249,6 +251,30 @@ export default function AdminDashboard() {
                                         />
                                     </div>
                                 )}
+
+                                {formData.role === 'DOCTOR' && (
+                                    <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                        <div>
+                                            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Start Time</label>
+                                            <input
+                                                type="time"
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                                                value={formData.startHour || "09:00"}
+                                                onChange={e => setFormData({ ...formData, startHour: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">End Time</label>
+                                            <input
+                                                type="time"
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                                                value={formData.endHour || "17:00"}
+                                                onChange={e => setFormData({ ...formData, endHour: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
 
                                 <div>
                                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Security PIN (4 digits)</label>

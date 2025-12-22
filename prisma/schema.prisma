@@ -15,6 +15,11 @@ model User {
   role      String   // Was Enum Role
   specialization String? // Doctor specialization
   passcode  String?  // Secure PIN for staff/admin
+  
+  // Doctor Scheduling
+  startHour String?  // e.g. "09:00"
+  endHour   String?  // e.g. "17:00"
+
   // Patient specific fields
   displayId String? @unique // e.g. "PT-1001"
   age       Int?
@@ -37,6 +42,10 @@ model Appointment {
   doctorId  String   @db.ObjectId
   date      DateTime
   status    String    @default("PENDING") // Was Enum AppointmentStatus
+  
+  // Booking Slot & Token
+  slotTime    String? // e.g. "09:00 - 10:00"
+  tokenNumber Int?    // e.g. 1
   
   patient   User @relation("PatientAppointments", fields: [patientId], references: [id])
   doctor    User @relation("DoctorAppointments", fields: [doctorId], references: [id])

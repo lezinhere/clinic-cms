@@ -293,12 +293,60 @@ app.post('/api/doctor/consult/submit', async (req, res) => {
     }
 });
 
+// --- NEW: Doctor Instant Book (Walk-in) ---
+app.post('/api/doctor/instant-book', async (req, res) => {
+    const { name, age, sex, phone, doctorId } = req.body;
+    try {
+        let user = await prisma.user.findFirst({
+            where: { phone, role: "PATIENT" }
+        });
+
+        if (!user) {
+            user = await prisma.user.create({
+                data: {
+                    name, phone, age: parseInt(age), sex,
+                    role: "PATIENT",
+                    displayId: `PID-WALK-${Date.now().toString().slice(-4)}`
+                }
+            });
+        }
+
+        // Auto-assign next token for "Walk-in" slot (generic)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const count = await prisma.appointment.count({
+            where: {
+                doctorId,
+                date: today,
+                slotTime: "Walk-in"
+            }
+        });
+
+        const appointment = await prisma.appointment.create({
+            data: {
+                patientId: user.id,
+                doctorId,
+                date: today,
+                status: "CONFIRMED", // Instant is auto-confirmed
+                slotTime: "Walk-in",
+                tokenNumber: count + 1
+            }
+        });
+
+        res.json({ success: true, appointment });
+    } catch (error) {
+        console.error("Instant Book Error:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // --- PATIENT ROUTES ---
 app.get('/api/patient/doctors', async (req, res) => {
     try {
         const doctors = await prisma.user.findMany({
             where: { role: 'DOCTOR' },
-            select: { id: true, name: true, specialization: true }
+            select: { id: true, name: true, specialization: true, startHour: true, endHour: true }
         });
         res.json(doctors);
     } catch (error) {
@@ -332,12 +380,30 @@ app.post('/api/patient/book', async (req, res) => {
             finalPatientId = user.id;
         }
 
+        // Token System Logic
+        let tokenNumber = 1;
+        const slotTime = req.body.slotTime; // e.g., "09:00 - 10:00"
+
+        if (slotTime) {
+            // Count existing appointments for this doctor + date + slot
+            const existingApps = await prisma.appointment.count({
+                where: {
+                    doctorId,
+                    date: new Date(date),
+                    slotTime
+                }
+            });
+            tokenNumber = existingApps + 1;
+        }
+
         const appointment = await prisma.appointment.create({
             data: {
                 patientId: finalPatientId,
                 doctorId,
                 date: new Date(date),
-                status: "PENDING"
+                status: "PENDING",
+                slotTime,
+                tokenNumber
             }
         });
 

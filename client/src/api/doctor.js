@@ -7,4 +7,5 @@ export const doctorApi = {
     searchMedicines: (query) => api.get(`/doctor/medicines/search?query=${query}`),
     searchLabs: (query) => api.get(`/doctor/labs/search?query=${query}`),
     submitConsultation: (data) => api.post('/doctor/consult/submit', data),
+    instantBook: (data) => api.post('/doctor/instant-book', data),
 };

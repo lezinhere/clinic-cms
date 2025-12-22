@@ -156,10 +156,10 @@ export default function ConsultationView() {
                 {/* Review Modal */}
                 {showSummary && (
                     <div className="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+                        <div id="printable-section" className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
                             <div className="p-6 border-b flex justify-between items-center bg-gray-50">
-                                <h2 className="text-xl font-bold text-gray-900">Confirm Submission</h2>
-                                <button onClick={() => setShowSummary(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+                                <h2 className="text-xl font-bold text-gray-900">Medical Prescription & Report</h2>
+                                <button onClick={() => setShowSummary(false)} className="text-gray-400 hover:text-gray-600 no-print">✕</button>
                             </div>
                             <div className="p-8 overflow-y-auto space-y-6">
                                 <div className="flex gap-6 p-4 bg-teal-50/50 rounded-xl border border-teal-100 items-center">
@@ -208,7 +208,10 @@ export default function ConsultationView() {
                                     )}
                                 </div>
                             </div>
-                            <div className="p-6 border-t bg-gray-50 flex gap-3 justify-end">
+                            <div className="p-6 border-t bg-gray-50 flex gap-3 justify-end no-print">
+                                <button onClick={() => window.print()} className="px-6 py-2.5 text-blue-600 font-bold hover:bg-blue-50 rounded-lg border border-blue-200 transition-colors flex items-center gap-2">
+                                    <span>🖨️</span> Print
+                                </button>
                                 <button onClick={() => setShowSummary(false)} className="px-6 py-2.5 text-gray-600 font-medium hover:bg-gray-200 rounded-lg transition-colors">Back</button>
                                 <button onClick={handleConfirmSubmit} disabled={loading} className="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-lg shadow-sm hover:bg-teal-700 transition-all">
                                     {loading ? "Submitting..." : "Confirm & Sign"}

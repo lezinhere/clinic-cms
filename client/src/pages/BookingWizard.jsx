@@ -19,8 +19,24 @@ export default function BookingWizard() {
         sex: "",
         phone: "",
         doctorId: "",
+        doctorId: "",
         date: "",
+        slotTime: "",
+        tokenNumber: null
     });
+
+    const generateSlots = (doctor) => {
+        if (!doctor || !doctor.startHour || !doctor.endHour) return ["09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"];
+
+        const slots = [];
+        let start = parseInt(doctor.startHour.split(':')[0]);
+        let end = parseInt(doctor.endHour.split(':')[0]);
+
+        for (let i = start; i < end; i++) {
+            slots.push(`${i.toString().padStart(2, '0')}:00 - ${(i + 1).toString().padStart(2, '0')}:00`);
+        }
+        return slots;
+    };
 
     useEffect(() => {
         patientApi.getDoctors().then(res => setDoctors(res.data));
@@ -50,8 +66,8 @@ export default function BookingWizard() {
             alert("Please select a doctor");
             return;
         }
-        if (currentStep === 2 && !formData.date) {
-            alert("Please select a time slot");
+        if (currentStep === 2 && (!formData.date || !formData.slotTime)) {
+            alert("Please select a date and time slot");
             return;
         }
         setCurrentStep(prev => prev + 1);
@@ -65,7 +81,9 @@ export default function BookingWizard() {
             const res = await patientApi.bookAppointment({
                 patientId: user?.role === "PATIENT" ? user.id : null,
                 doctorId: formData.doctorId,
+                doctorId: formData.doctorId,
                 date: formData.date,
+                slotTime: formData.slotTime,
                 guestDetails: {
                     name: formData.name,
                     age: formData.age,
@@ -75,6 +93,9 @@ export default function BookingWizard() {
             });
 
             if (res.data.success) {
+                if (res.data.appointment?.tokenNumber) {
+                    setFormData(prev => ({ ...prev, tokenNumber: res.data.appointment.tokenNumber }));
+                }
                 setCurrentStep(4);
             } else {
                 alert("Booking Failed: " + (res.data.error || ""));
@@ -164,16 +185,43 @@ export default function BookingWizard() {
                     </div>
                 );
             case 2:
+                const selectedDoc = doctors.find(d => d.id === formData.doctorId);
+                const slots = generateSlots(selectedDoc);
+
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-bold text-gray-800">Choose Appointment Date</h2>
-                        <input
-                            type="datetime-local"
-                            className="w-full p-6 border-2 border-gray-100 rounded-[2rem] bg-gray-50 text-xl font-bold text-teal-700 outline-none focus:border-teal-500 transition-colors"
-                            value={formData.date}
-                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        />
-                        <p className="text-gray-400 font-medium text-center">Secure your slot in the clinic schedule.</p>
+                        <h2 className="text-2xl font-bold text-gray-800">Pick a Time Slot</h2>
+
+                        <div>
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Date</label>
+                            <input
+                                type="date"
+                                className="w-full p-6 border-2 border-gray-100 rounded-[2rem] bg-gray-50 text-xl font-bold text-teal-700 outline-none focus:border-teal-500 transition-colors"
+                                value={formData.date}
+                                min={new Date().toISOString().split('T')[0]}
+                                onChange={(e) => setFormData({ ...formData, date: e.target.value, slotTime: "" })}
+                            />
+                        </div>
+
+                        {formData.date && (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Available Tokens (FCFS)</label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {slots.map(slot => (
+                                        <button
+                                            key={slot}
+                                            onClick={() => setFormData({ ...formData, slotTime: slot })}
+                                            className={`p-4 rounded-xl border-2 font-bold transition-all ${formData.slotTime === slot
+                                                    ? "bg-teal-600 text-white border-teal-600 shadow-lg shadow-teal-200 scale-105"
+                                                    : "bg-white border-gray-100 text-gray-600 hover:border-teal-200"
+                                                }`}
+                                        >
+                                            {slot}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             case 3:
@@ -192,7 +240,11 @@ export default function BookingWizard() {
                             </div>
                             <div className="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm">
                                 <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Scheduled For</span>
-                                <span className="font-bold text-gray-800">{new Date(formData.date).toLocaleString()}</span>
+                                <span className="font-bold text-gray-800">{formData.date} @ {formData.slotTime}</span>
+                            </div>
+                            <div className="flex justify-between items-center bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                                <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">Expected Token</span>
+                                <span className="font-bold text-teal-800">Next Available</span>
                             </div>
                         </div>
                     </div>
@@ -207,12 +259,10 @@ export default function BookingWizard() {
                         <p className="text-gray-500 mb-8 max-w-sm mx-auto font-medium">
                             Your session with {doctors.find(d => d.id === formData.doctorId)?.name} is successfully scheduled.
                         </p>
-                        <div className="bg-indigo-50 text-indigo-700 p-6 rounded-3xl mb-10 flex items-center gap-4 text-left border border-indigo-100">
-                            <div className="text-3xl">📱</div>
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-widest mb-1 opacity-60">Instant Confirmation</p>
-                                <p className="text-sm font-bold">A digital token has been sent to {formData.phone} for your records.</p>
-                            </div>
+                        <div className="bg-indigo-50 text-indigo-700 p-6 rounded-3xl mb-10 border border-indigo-100 flex flex-col items-center gap-4">
+                            <div className="text-sm font-bold uppercase tracking-widest opacity-60">Your Token Number</div>
+                            <div className="text-6xl font-black">{formData.tokenNumber || "?"}</div>
+                            <p className="text-xs font-bold opacity-70">Please arrive 10 min before {formData.slotTime}</p>
                         </div>
                         <button
                             onClick={() => navigate("/patient/login")}
