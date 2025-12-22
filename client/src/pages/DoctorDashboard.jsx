@@ -71,6 +71,12 @@ export default function DoctorDashboard() {
                 </div>
                 <div className="flex gap-4">
                     <button
+                        onClick={refreshData}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg font-bold transition-all active:scale-95"
+                    >
+                        ↻
+                    </button>
+                    <button
                         onClick={() => setWalkInModal(true)}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg shadow-blue-200 font-bold transition-all active:scale-95 flex items-center gap-2"
                     >
@@ -136,8 +142,13 @@ export default function DoctorDashboard() {
                                                 <div className="text-sm text-gray-500 flex flex-wrap gap-x-3 gap-y-1 mt-1">
                                                     <span>{apt.patient?.age} yrs</span>
                                                     <span>{apt.patient?.sex}</span>
-                                                    <span className="font-semibold text-blue-600">
-                                                        {new Date(apt.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    {apt.tokenNumber && (
+                                                        <span className="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs font-bold">
+                                                            Token #{apt.tokenNumber}
+                                                        </span>
+                                                    )}
+                                                    <span className="font-semibold text-blue-600 block sm:inline">
+                                                        {apt.slotTime || new Date(apt.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </span>
                                                 </div>
                                             </div>

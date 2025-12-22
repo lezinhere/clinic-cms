@@ -12,6 +12,8 @@ export default function BookingWizard() {
     const [currentStep, setCurrentStep] = useState(0);
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [previewToken, setPreviewToken] = useState(null);
+    const [finalToken, setFinalToken] = useState(null);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -72,9 +74,28 @@ export default function BookingWizard() {
             return;
         }
         if (currentStep === 2 && (!formData.date || !formData.slotTime)) {
-            alert("Please select a date and time slot");
+            alert("Please pick a slot");
             return;
         }
+
+        if (currentStep === 2) {
+            // Fetch Token Preview before showing summary
+            fetch('/api/patient/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    doctorId: formData.doctorId,
+                    date: formData.date,
+                    slotTime: formData.slotTime
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.token) setPreviewToken(data.token);
+                })
+                .catch(err => console.error("Token preview failed", err));
+        }
+
         setCurrentStep(prev => prev + 1);
     };
 
@@ -97,10 +118,8 @@ export default function BookingWizard() {
             });
 
             if (res.data.success) {
-                if (res.data.appointment?.tokenNumber) {
-                    setFormData(prev => ({ ...prev, tokenNumber: res.data.appointment.tokenNumber }));
-                }
-                setCurrentStep(4);
+                setFinalToken(res.data.appointment.tokenNumber);
+                setCurrentStep(4); // Success Step
             } else {
                 alert("Booking Failed: " + (res.data.error || ""));
             }
@@ -246,9 +265,11 @@ export default function BookingWizard() {
                                 <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Scheduled For</span>
                                 <span className="font-bold text-gray-800">{formData.date} @ {formData.slotTime}</span>
                             </div>
-                            <div className="flex justify-between items-center bg-teal-50 p-4 rounded-2xl border border-teal-100">
-                                <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">Expected Token</span>
-                                <span className="font-bold text-teal-800">Next Available</span>
+                            <div className="bg-teal-50 p-6 rounded-2xl flex justify-between items-center border border-teal-100">
+                                <span className="text-teal-800 font-bold uppercase tracking-wider text-sm">Expected Token</span>
+                                <span className="text-2xl font-bold text-teal-600">
+                                    {previewToken ? `#${previewToken}` : "Loading..."}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -263,12 +284,17 @@ export default function BookingWizard() {
                         <p className="text-gray-500 mb-8 max-w-sm mx-auto font-medium">
                             Your session with {doctors.find(d => d.id === formData.doctorId)?.name} is successfully scheduled.
                         </p>
-                        <div className="bg-indigo-50 text-indigo-700 p-6 rounded-3xl mb-10 border border-indigo-100 flex flex-col items-center gap-4">
-                            <div className="text-sm font-bold uppercase tracking-widest opacity-60">Your Token Number</div>
-                            <div className="text-6xl font-black">{formData.tokenNumber || "?"}</div>
-                            <p className="text-xs font-bold opacity-70">Please arrive 10 min before {formData.slotTime}</p>
-                        </div>
-                        <button
+                        <div className="bg-slate-50 p-8 rounded-3xl mb-8 border border-slate-100">
+                            <div className="text-center">
+                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Your Token Number</h3>
+                                <div className="text-6xl font-black text-blue-600 drop-shadow-sm mb-4">
+                                    {finalToken || "?"}
+                                </div>
+                                <p className="text-slate-500 font-medium bg-white inline-block px-4 py-1 rounded-full text-xs shadow-sm border border-slate-100">
+                                    Please arrive 10 min before {formData.slotTime}
+                                </p>
+                            </div>
+                        </div>        <button
                             onClick={() => navigate("/patient/login")}
                             className="w-full py-4 bg-teal-600 text-white rounded-2xl hover:bg-teal-700 font-bold shadow-xl shadow-teal-100 transition-all active:scale-95"
                         >
