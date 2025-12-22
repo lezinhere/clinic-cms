@@ -12,6 +12,7 @@ import PatientHome from './pages/PatientHome';
 import BookingWizard from './pages/BookingWizard';
 import PatientHistory from './pages/PatientHistory';
 import DoctorDashboard from './pages/DoctorDashboard';
+import FutureAppointments from './pages/FutureAppointments';
 import AdminDashboard from './pages/AdminDashboard';
 import ConsultationView from './pages/ConsultationView';
 import PharmacyQueue from './pages/PharmacyQueue';
@@ -35,6 +36,7 @@ function App() {
 
             {/* Protected Routes */}
             <Route path="doctor/dashboard" element={<DoctorDashboard />} />
+            <Route path="doctor/future" element={<FutureAppointments />} />
             <Route path="doctor/consult/:appointmentId" element={<ConsultationView />} />
             <Route path="admin/dashboard" element={<AdminDashboard />} />
             <Route path="pharmacy/queue" element={<PharmacyQueue />} />

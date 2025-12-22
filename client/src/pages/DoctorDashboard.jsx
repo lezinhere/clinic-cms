@@ -21,7 +21,11 @@ export default function DoctorDashboard() {
                 doctorApi.getAppointments(user.id),
                 doctorApi.getHistory(user.id, searchQuery)
             ]).then(([upcomingRes, pastRes]) => {
-                setAppointments(upcomingRes.data);
+                // Filter for TODAY ONLY
+                const todayStr = new Date().toDateString();
+                const todayApts = upcomingRes.data.filter(apt => new Date(apt.date).toDateString() === todayStr);
+
+                setAppointments(todayApts);
                 setHistory(pastRes.data);
                 setLoading(false);
             }).catch(() => setLoading(false));
@@ -30,7 +34,11 @@ export default function DoctorDashboard() {
 
     const refreshData = () => {
         if (user) {
-            doctorApi.getAppointments(user.id).then(res => setAppointments(res.data));
+            doctorApi.getAppointments(user.id).then(res => {
+                const todayStr = new Date().toDateString();
+                const todayApts = res.data.filter(apt => new Date(apt.date).toDateString() === todayStr);
+                setAppointments(todayApts);
+            });
             doctorApi.getHistory(user.id, searchQuery).then(res => setHistory(res.data));
         }
     };

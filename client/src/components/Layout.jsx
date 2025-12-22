@@ -8,7 +8,8 @@ const NAV_ITEMS = {
         { label: "My History", href: "/patient/history" },
     ],
     DOCTOR: [
-        { label: "Active Appointments", href: "/doctor/dashboard" },
+        { label: "Today's Schedule", href: "/doctor/dashboard" }, // Renamed for clarity
+        { label: "Future Appointments", href: "/doctor/future" },
     ],
     PHARMACY: [
         { label: "Live Queue", href: "/pharmacy/queue" },
