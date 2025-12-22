@@ -163,13 +163,8 @@ export default function ProviderLoginPage() {
 
                 {renderStep()}
 
-                <div className="mt-8 pt-8 border-t border-white/5 text-center">
-                    <button
-                        onClick={() => navigate("/")}
-                        className="text-slate-500 hover:text-white transition-colors text-sm font-medium"
-                    >
-                        ← Return to Patient Portal
-                    </button>
+                <div className="mt-8 pt-8 border-t border-white/5 text-center text-slate-500 text-xs">
+                    Authorized Personnel Only
                 </div>
             </div>
         </div>
