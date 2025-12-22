@@ -20,13 +20,24 @@ import PharmacyHistory from './pages/PharmacyHistory';
 import LabRequests from './pages/LabRequests';
 import LabHistory from './pages/LabHistory';
 
-function App() {
+const App = () => {
+  // Environment-based Root Routing
+  // VITE_PORTAL_MODE="HOSPITAL" -> Root is Staff Login
+  // VITE_PORTAL_MODE="PATIENT" (Default) -> Root is Patient Home
+  const PortalRoot = () => {
+    const mode = import.meta.env.VITE_PORTAL_MODE;
+    if (mode === 'HOSPITAL') {
+      return <ProviderLoginPage />;
+    }
+    return <PatientHome />;
+  };
+
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<PatientHome />} />
+            <Route index element={<PortalRoot />} />
             <Route path="care-connect" element={<CareConnect />} />
             <Route path="care-connect/login" element={<ProviderLoginPage />} />
             <Route path="patient" element={<PatientHome />} />
