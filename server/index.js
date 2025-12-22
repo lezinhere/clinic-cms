@@ -471,6 +471,9 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
 
             // 3. Finally, Delete the User
             await tx.user.delete({ where: { id } });
+        }, {
+            maxWait: 5000, // default: 2000
+            timeout: 20000 // default: 5000 (Increased for Render Free Tier)
         });
 
         res.json({ success: true });
