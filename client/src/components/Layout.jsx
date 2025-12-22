@@ -115,8 +115,13 @@ export default function Layout() {
                 <div className="p-4 border-t">
                     <button
                         onClick={() => {
+                            const isPatient = user?.role === "PATIENT";
                             logout();
-                            navigate("/");
+                            if (isPatient) {
+                                navigate("/patient");
+                            } else {
+                                navigate("/");
+                            }
                         }}
                         className="w-full px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg text-left font-medium transition-colors"
                     >
