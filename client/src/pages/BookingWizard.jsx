@@ -27,15 +27,25 @@ export default function BookingWizard() {
         tokenNumber: null
     });
 
+    const formatTime = (hour) => {
+        const h = hour % 12 || 12;
+        const ampm = hour < 12 ? 'AM' : 'PM';
+        return `${h}:00 ${ampm}`;
+    };
+
     const generateSlots = (doctor) => {
-        if (!doctor || !doctor.startHour || !doctor.endHour) return ["09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"];
+        // Fallback slots in 12h format
+        if (!doctor || !doctor.startHour || !doctor.endHour) {
+            return ["09:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM",
+                "02:00 PM - 03:00 PM", "03:00 PM - 04:00 PM", "04:00 PM - 05:00 PM"];
+        }
 
         const slots = [];
         let start = parseInt(doctor.startHour.split(':')[0]);
         let end = parseInt(doctor.endHour.split(':')[0]);
 
         for (let i = start; i < end; i++) {
-            slots.push(`${i.toString().padStart(2, '0')}:00 - ${(i + 1).toString().padStart(2, '0')}:00`);
+            slots.push(`${formatTime(i)} - ${formatTime(i + 1)}`);
         }
         return slots;
     };
@@ -139,7 +149,8 @@ export default function BookingWizard() {
                             <div>
                                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Patient Full Name</label>
                                 <input
-                                    className="w-full p-4 border rounded-2xl bg-gray-50 focus:ring-2 focus:ring-teal-500 transition-all font-medium"
+                                    className="w-full p-4 border-2 border-slate-200 rounded-2xl bg-slate-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-bold text-gray-700 placeholder-gray-300"
+                                    placeholder="e.g. John Doe"
                                     value={formData.name}
                                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                                 />
@@ -149,7 +160,7 @@ export default function BookingWizard() {
                                     <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Age</label>
                                     <input
                                         type="number"
-                                        className="w-full p-4 border rounded-2xl bg-gray-50 focus:ring-2 focus:ring-teal-500 font-medium"
+                                        className="w-full p-4 border-2 border-slate-200 rounded-2xl bg-slate-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-bold text-gray-700 placeholder-gray-300"
                                         value={formData.age}
                                         onChange={e => setFormData({ ...formData, age: e.target.value })}
                                     />
@@ -157,7 +168,7 @@ export default function BookingWizard() {
                                 <div>
                                     <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Sex</label>
                                     <select
-                                        className="w-full p-4 border rounded-2xl bg-gray-50 focus:ring-2 focus:ring-teal-500 font-medium"
+                                        className="w-full p-4 border-2 border-slate-200 rounded-2xl bg-slate-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-bold text-gray-700 outline-none"
                                         value={formData.sex}
                                         onChange={e => setFormData({ ...formData, sex: e.target.value })}
                                     >
@@ -171,7 +182,7 @@ export default function BookingWizard() {
                             <div>
                                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">10-Digit Mobile Number</label>
                                 <input
-                                    className="w-full p-4 border rounded-2xl bg-gray-50 focus:ring-2 focus:ring-teal-500 font-medium"
+                                    className="w-full p-4 border-2 border-slate-200 rounded-2xl bg-slate-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-bold text-gray-700 placeholder-gray-300"
                                     value={formData.phone}
                                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
                                 />
@@ -219,9 +230,10 @@ export default function BookingWizard() {
                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Date</label>
                             <input
                                 type="date"
-                                className="w-full p-6 border-2 border-gray-100 rounded-[2rem] bg-gray-50 text-xl font-bold text-teal-700 outline-none focus:border-teal-500 transition-colors"
+                                className="w-full p-6 border-2 border-slate-200 rounded-[2rem] bg-slate-50 text-xl font-bold text-teal-700 outline-none focus:border-teal-500 focus:bg-white transition-colors cursor-pointer"
                                 value={formData.date}
                                 min={new Date().toISOString().split('T')[0]}
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
                                 onChange={(e) => setFormData({ ...formData, date: e.target.value, slotTime: "" })}
                             />
                         </div>
