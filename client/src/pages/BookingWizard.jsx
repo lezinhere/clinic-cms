@@ -81,7 +81,6 @@ export default function BookingWizard() {
             const res = await patientApi.bookAppointment({
                 patientId: user?.role === "PATIENT" ? user.id : null,
                 doctorId: formData.doctorId,
-                doctorId: formData.doctorId,
                 date: formData.date,
                 slotTime: formData.slotTime,
                 guestDetails: {
@@ -212,8 +211,8 @@ export default function BookingWizard() {
                                             key={slot}
                                             onClick={() => setFormData({ ...formData, slotTime: slot })}
                                             className={`p-4 rounded-xl border-2 font-bold transition-all ${formData.slotTime === slot
-                                                    ? "bg-teal-600 text-white border-teal-600 shadow-lg shadow-teal-200 scale-105"
-                                                    : "bg-white border-gray-100 text-gray-600 hover:border-teal-200"
+                                                ? "bg-teal-600 text-white border-teal-600 shadow-lg shadow-teal-200 scale-105"
+                                                : "bg-white border-gray-100 text-gray-600 hover:border-teal-200"
                                                 }`}
                                         >
                                             {slot}
