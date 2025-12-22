@@ -33,7 +33,14 @@ export default function ConsultationView() {
             .then(res => {
                 console.log("Fetch result:", res.data);
                 if (res.data) {
-                    setPatient(res.data.patient);
+                    const apt = res.data;
+                    const displayPatient = {
+                        ...apt.patient,
+                        name: apt.patientName || apt.patient.name,
+                        age: apt.patientAge || apt.patient.age,
+                        sex: apt.patientGender || apt.patient.sex
+                    };
+                    setPatient(displayPatient);
                 }
             })
             .catch(err => {
