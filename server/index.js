@@ -383,13 +383,14 @@ app.get('/api/admin/staff', async (req, res) => {
 
 app.post('/api/admin/staff', async (req, res) => {
     try {
-        // Prevent duplicate Staff IDs
+        // Prevent duplicate Staff IDs (Robust Check)
         if (req.body.displayId) {
-            const existing = await prisma.user.findUnique({
-                where: { displayId: req.body.displayId }
+            const checkId = req.body.displayId.trim();
+            const existing = await prisma.user.findFirst({
+                where: { displayId: checkId }
             });
             if (existing) {
-                return res.status(400).json({ success: false, error: "Staff ID already exists. Please choose a unique ID." });
+                return res.status(400).json({ success: false, error: `Staff ID '${checkId}' already exists.` });
             }
         }
 
