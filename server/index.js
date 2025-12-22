@@ -407,10 +407,10 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
     try {
         await prisma.$transaction(async (tx) => {
             // 1. Gather all linked appointments (Doctor OR Patient role)
-            const doctorAppointments = await tx.appointment.findMany({ where: { doctorId: id } });
-            const patientAppointments = await tx.appointment.findMany({ where: { patientId: id } });
-
-            const allAppointments = [...doctorAppointments, ...patientAppointments];
+            // 1. Gather all linked appointments (Doctor OR Patient role) - OPTIMIZED: Single Query
+            const allAppointments = await tx.appointment.findMany({
+                where: { OR: [{ doctorId: id }, { patientId: id }] }
+            });
 
             if (allAppointments.length > 0) {
                 const apptIds = allAppointments.map(a => a.id);
@@ -422,58 +422,55 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
                 const consultIds = consultations.map(c => c.id);
 
                 if (consultIds.length > 0) {
-                    // Delete Lab Requests linked to these consultations
-                    await tx.labRequest.deleteMany({
-                        where: { consultationId: { in: consultIds } }
-                    });
+                    // Delete Lab Requests & Prescriptions linked to consultations
+                    // Note: Cascading manually for safety, but gathering IDs first logic remains 
+                    // to ensure correct order if constraints existed.
 
-                    // Delete Prescriptions linked to these consultations
                     const prescriptions = await tx.prescription.findMany({
                         where: { consultationId: { in: consultIds } }
                     });
                     const presIds = prescriptions.map(p => p.id);
 
                     if (presIds.length > 0) {
-                        // Delete Prescription Items first
                         await tx.prescriptionItem.deleteMany({
                             where: { prescriptionId: { in: presIds } }
                         });
-                        // Delete Prescriptions
                         await tx.prescription.deleteMany({
                             where: { id: { in: presIds } }
                         });
                     }
 
-                    // Delete Consultations
+                    await tx.labRequest.deleteMany({
+                        where: { consultationId: { in: consultIds } }
+                    });
+
                     await tx.consultation.deleteMany({
                         where: { id: { in: consultIds } }
                     });
                 }
 
-                // Delete Appointments
                 await tx.appointment.deleteMany({
                     where: { id: { in: apptIds } }
                 });
             }
 
-            // 2. If PHARMACY/LAB: Nullify references in processed items
-            // Unlink dispensed prescriptions
-            await tx.prescription.updateMany({
-                where: { dispensedById: id },
-                data: { dispensedById: null }
-            });
-
-            // Unlink completed lab reports
-            await tx.labRequest.updateMany({
-                where: { technicianId: id },
-                data: { technicianId: null }
-            });
+            // 2. If PHARMACY/LAB: Nullify references in processed items - OPTIMIZED: Parallel execution
+            await Promise.all([
+                tx.prescription.updateMany({
+                    where: { dispensedById: id },
+                    data: { dispensedById: null }
+                }),
+                tx.labRequest.updateMany({
+                    where: { technicianId: id },
+                    data: { technicianId: null }
+                })
+            ]);
 
             // 3. Finally, Delete the User
             await tx.user.delete({ where: { id } });
         }, {
-            maxWait: 5000, // default: 2000
-            timeout: 20000 // default: 5000 (Increased for Render Free Tier)
+            maxWait: 5000,
+            timeout: 20000
         });
 
         res.json({ success: true });
