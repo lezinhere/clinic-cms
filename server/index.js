@@ -476,7 +476,7 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error("Delete Staff Error:", error);
-        res.status(500).json({ success: false, error: "Failed to delete staff due to data dependencies." });
+        res.status(500).json({ success: false, error: `Delete Failed: ${error.message}` });
     }
 });
 
