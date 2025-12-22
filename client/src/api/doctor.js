@@ -8,4 +8,5 @@ export const doctorApi = {
     searchLabs: (query) => api.get(`/doctor/labs/search?query=${query}`),
     submitConsultation: (data) => api.post('/doctor/consult/submit', data),
     instantBook: (data) => api.post('/doctor/instant-book', data),
+    cancelAppointment: (id) => api.patch(`/doctor/appointment/${id}`, { status: 'CANCELLED' }),
 };

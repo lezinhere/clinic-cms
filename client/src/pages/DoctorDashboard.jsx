@@ -154,12 +154,26 @@ export default function DoctorDashboard() {
                                             </div>
                                         </div>
 
-                                        <Link
-                                            to={`/doctor/consult/${apt.id}`}
-                                            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all active:scale-95 text-center shadow-lg shadow-blue-100"
-                                        >
-                                            Start Consult
-                                        </Link>
+                                        <div className="flex gap-2 w-full sm:w-auto">
+                                            <button
+                                                onClick={() => {
+                                                    if (window.confirm("Cancel this appointment?")) {
+                                                        doctorApi.cancelAppointment(apt.id)
+                                                            .then(() => refreshData())
+                                                            .catch(err => alert("Failed to cancel"));
+                                                    }
+                                                }}
+                                                className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-colors text-sm"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <Link
+                                                to={`/doctor/consult/${apt.id}`}
+                                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all active:scale-95 text-center shadow-lg shadow-blue-100"
+                                            >
+                                                Start Consult
+                                            </Link>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
