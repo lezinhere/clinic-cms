@@ -56,12 +56,12 @@ export default function FutureAppointments() {
                         <div key={apt.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-4">
                                 <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
-                                    {apt.patient.name[0]}
+                                    {(apt.patientName || apt.patient.name)[0]}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900">{apt.patient.name}</h3>
+                                    <h3 className="font-bold text-gray-900">{apt.patientName || apt.patient.name}</h3>
                                     <p className="text-sm text-gray-500">
-                                        {apt.patient.age} yrs • {apt.patient.sex} • <span className="text-blue-600 font-medium">{new Date(apt.date).toDateString()}</span>
+                                        {apt.patientAge || apt.patient.age} yrs • {apt.patientGender || apt.patient.sex} • <span className="text-blue-600 font-medium">{new Date(apt.date).toDateString()}</span>
                                     </p>
                                     <div className="flex gap-2 mt-1">
                                         {apt.slotTime && <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md font-medium">{apt.slotTime}</span>}

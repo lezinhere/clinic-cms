@@ -47,6 +47,11 @@ model Appointment {
   slotTime    String? // e.g. "09:00 - 10:00"
   tokenNumber Int?    // e.g. 1
   
+  // Actual Patient Details (for Family Booking)
+  patientName   String?
+  patientAge    Int?
+  patientGender String?
+  
   patient   User @relation("PatientAppointments", fields: [patientId], references: [id])
   doctor    User @relation("DoctorAppointments", fields: [doctorId], references: [id])
 

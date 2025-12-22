@@ -53,7 +53,11 @@ export async function POST(req: Request) {
                 date: new Date(date),
                 slotTime: body.slotTime,
                 tokenNumber: tokenNumber,
-                status: "PENDING"
+                status: "PENDING",
+                // Store actual patient details (Family Booking Support)
+                patientName: guestDetails ? guestDetails.name : (body.patientName || null),
+                patientAge: guestDetails ? parseInt(guestDetails.age) : (body.patientAge ? parseInt(body.patientAge) : null),
+                patientGender: guestDetails ? guestDetails.sex : (body.patientGender || null)
             },
             include: {
                 patient: true,

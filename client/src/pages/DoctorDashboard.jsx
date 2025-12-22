@@ -195,98 +195,105 @@ export default function DoctorDashboard() {
                                 <div key={apt.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="h-10 w-10 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center font-bold">
-                                                {apt.patient?.name?.charAt(0)}
+                                            <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
+                                                {(apt.patientName || apt.patient.name)[0]}
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-gray-800">{apt.patient?.name}</h4>
-                                                <p className="text-xs text-gray-400">{new Date(apt.date).toLocaleDateString()}</p>
+                                                <h3 className="font-bold text-gray-900">{apt.patientName || apt.patient.name}</h3>
+                                                <p className="text-sm text-gray-500">
+                                                    {apt.patientAge || apt.patient.age} yrs • {apt.patientGender || apt.patient.sex} • <span className="font-mono bg-teal-50 text-teal-700 px-2 rounded">{apt.tokenNumber ? `Token #${apt.tokenNumber}` : 'No Token'}</span>
+                                                </p>
+                                                <div className="text-blue-600 font-bold text-sm mt-1">
+                                                    {apt.slotTime || "Walk-In"}
+                                                </div>
                                             </div>
+                                            <div className="flex-1 px-4 truncate text-sm text-gray-600 italic">
+                                                {apt.consultation?.diagnosis || "No diagnosis recorded"}
+                                            </div>
+                                            <Link
+                                                to={`/patient/history?patientId=${apt.patient?.id}`}
+                                                className="text-blue-600 font-bold text-sm hover:underline whitespace-nowrap"
+                                            >
+                                                View Details →
+                                            </Link>
                                         </div>
-                                        <div className="flex-1 px-4 truncate text-sm text-gray-600 italic">
-                                            {apt.consultation?.diagnosis || "No diagnosis recorded"}
-                                        </div>
-                                        <Link
-                                            to={`/patient/history?patientId=${apt.patient?.id}`}
-                                            className="text-blue-600 font-bold text-sm hover:underline whitespace-nowrap"
-                                        >
-                                            View Details →
-                                        </Link>
                                     </div>
-                                </div>
-                            ))}
+                    ))}
 
-                            {history.length === 0 && (
-                                <div className="bg-white p-12 rounded-2xl shadow-sm text-center border border-gray-100 italic text-gray-400">
-                                    No past consultation records found.
+                                    {history.length === 0 && (
+                                        <div className="bg-white p-12 rounded-2xl shadow-sm text-center border border-gray-100 italic text-gray-400">
+                                            No past consultation records found.
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
-                    )}
-                </div>
-            )}
-            {/* Walk-in Modal */}
-            {walkInModal && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-                    <div className="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl border border-white/20">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold text-gray-800">Add Walk-in Patient</h2>
-                            <button onClick={() => setWalkInModal(false)} className="text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
-                        </div>
-                        <form onSubmit={handleWalkInSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Patient Name</label>
-                                <input
-                                    required
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
-                                    value={walkInForm.name}
-                                    onChange={e => setWalkInForm({ ...walkInForm, name: e.target.value })}
-                                />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Age</label>
-                                    <input
-                                        required
-                                        type="number"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
-                                        value={walkInForm.age}
-                                        onChange={e => setWalkInForm({ ...walkInForm, age: e.target.value })}
-                                    />
+                    )
+                    }
+                    {/* Walk-in Modal */}
+                    {
+                        walkInModal && (
+                            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+                                <div className="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl border border-white/20">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-2xl font-bold text-gray-800">Add Walk-in Patient</h2>
+                                        <button onClick={() => setWalkInModal(false)} className="text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
+                                    </div>
+                                    <form onSubmit={handleWalkInSubmit} className="space-y-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Patient Name</label>
+                                            <input
+                                                required
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                                                value={walkInForm.name}
+                                                onChange={e => setWalkInForm({ ...walkInForm, name: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Age</label>
+                                                <input
+                                                    required
+                                                    type="number"
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                                                    value={walkInForm.age}
+                                                    onChange={e => setWalkInForm({ ...walkInForm, age: e.target.value })}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Sex</label>
+                                                <select
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                                                    value={walkInForm.sex}
+                                                    onChange={e => setWalkInForm({ ...walkInForm, sex: e.target.value })}
+                                                >
+                                                    <option value="">Select</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Phone</label>
+                                            <input
+                                                required
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                                                value={walkInForm.phone}
+                                                onChange={e => setWalkInForm({ ...walkInForm, phone: e.target.value })}
+                                            />
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            disabled={walkInLoading}
+                                            className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95 disabled:opacity-50"
+                                        >
+                                            {walkInLoading ? "Registering..." : "Book Appointment"}
+                                        </button>
+                                    </form>
                                 </div>
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Sex</label>
-                                    <select
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
-                                        value={walkInForm.sex}
-                                        onChange={e => setWalkInForm({ ...walkInForm, sex: e.target.value })}
-                                    >
-                                        <option value="">Select</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
                             </div>
-                            <div>
-                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Phone</label>
-                                <input
-                                    required
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold"
-                                    value={walkInForm.phone}
-                                    onChange={e => setWalkInForm({ ...walkInForm, phone: e.target.value })}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={walkInLoading}
-                                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-lg shadow-blue-100 transition-all active:scale-95 disabled:opacity-50"
-                            >
-                                {walkInLoading ? "Registering..." : "Book Appointment"}
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+                        )
+                    }
+                </div >
+            );
 }
