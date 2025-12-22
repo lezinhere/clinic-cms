@@ -41,6 +41,18 @@ export default function PatientHome() {
                         Check Status
                     </button>
                 </div>
+                <div className="mt-8 pt-8 border-t border-slate-200 text-center">
+                    <p className="text-slate-400 text-sm mb-4">Clinic Staff?</p>
+                    <button
+                        onClick={() => navigate("/care-connect/login")}
+                        className="text-slate-500 hover:text-teal-600 font-medium text-sm transition-colors flex items-center justify-center gap-2 mx-auto"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        Login to Portal
+                    </button>
+                </div>
             </div>
         </div>
     );

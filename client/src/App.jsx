@@ -4,7 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 
 // Pages
-import LandingPage from './pages/LandingPage';
+// import LandingPage from './pages/LandingPage'; // Removed
 import CareConnect from './pages/CareConnect';
 import ProviderLoginPage from './pages/ProviderLoginPage';
 import PatientLoginPage from './pages/PatientLoginPage';
@@ -25,7 +25,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<LandingPage />} />
+            <Route index element={<PatientHome />} />
             <Route path="care-connect" element={<CareConnect />} />
             <Route path="care-connect/login" element={<ProviderLoginPage />} />
             <Route path="patient" element={<PatientHome />} />
