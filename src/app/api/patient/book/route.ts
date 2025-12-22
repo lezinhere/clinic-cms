@@ -29,19 +29,22 @@ export async function POST(req: Request) {
             finalPatientId = user.id;
         }
 
-        // Generate Token Number
-        const count = await prisma.appointment.count({
+        // Generate Token Number (Fix: Use MAX + 1 instead of COUNT to avoid duplicates)
+        const lastAppointment = await prisma.appointment.findFirst({
             where: {
                 doctorId,
-                slotTime: body.slotTime, // Ensure slotTime is passed in body
+                slotTime: body.slotTime,
                 date: {
                     gte: new Date(date),
                     lt: new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
                 },
                 status: { not: "CANCELLED" }
-            }
+            },
+            orderBy: { tokenNumber: 'desc' },
+            select: { tokenNumber: true }
         });
-        const tokenNumber = count + 1;
+
+        const tokenNumber = (lastAppointment?.tokenNumber || 0) + 1;
 
         const appointment = await prisma.appointment.create({
             data: {

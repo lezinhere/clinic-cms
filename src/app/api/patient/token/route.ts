@@ -9,24 +9,23 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
-        // Count existing appointments for this slot
-        const count = await prisma.appointment.count({
+        // Find last token for this slot
+        const lastAppointment = await prisma.appointment.findFirst({
             where: {
                 doctorId,
                 slotTime,
-                // Match date loosely or strictly depending on how it's stored.
-                // Best to store dates as 'YYYY-MM-DD' strings or start-of-day ISOs if exact match needed.
-                // Assuming the backend stores exact ISOs from the input, we need to match the day.
                 date: {
                     gte: new Date(date),
                     lt: new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
                 },
                 status: { not: "CANCELLED" }
-            }
+            },
+            orderBy: { tokenNumber: 'desc' },
+            select: { tokenNumber: true }
         });
 
-        // Next token is count + 1
-        const nextToken = count + 1;
+        // Next token is max + 1
+        const nextToken = (lastAppointment?.tokenNumber || 0) + 1;
 
         return NextResponse.json({ token: nextToken });
     } catch (error: any) {

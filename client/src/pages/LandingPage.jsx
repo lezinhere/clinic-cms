@@ -19,31 +19,33 @@ export default function LandingPage() {
             {/* Hero Section */}
             <main className="max-w-7xl mx-auto px-6 py-20 lg:py-32 grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8 animate-in slide-in-from-left duration-700">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold tracking-wide border border-blue-100">
-                        <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                        </span>
-                        Secure Workspace
-                    </div>
                     <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-tight">
-                        Clinic Operations <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                            Center
+                        Healthcare <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-600">
+                            Simplified.
                         </span>
                     </h1>
                     <p className="text-xl text-slate-500 max-w-lg leading-relaxed">
-                        Centralized management for Appointments, Consultations, Pharmacy, and Laboratory services.
+                        Seamless appointment booking for patients and centralized operations for staff.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <button
-                            onClick={() => navigate("/care-connect/login")}
-                            className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-200 hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-3"
+                            onClick={() => navigate("/patient/book")}
+                            className="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold text-lg shadow-lg shadow-teal-200 hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-3"
                         >
-                            <span>Login to Workspace</span>
+                            <span>Book Appointment</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => navigate("/care-connect/login")}
+                            className="px-8 py-4 bg-white hover:bg-gray-50 text-slate-700 border-2 border-slate-200 rounded-xl font-bold text-lg transition-all flex items-center gap-3"
+                        >
+                            <span>Staff Login</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                             </svg>
                         </button>
                     </div>
