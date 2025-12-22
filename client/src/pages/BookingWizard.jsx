@@ -189,7 +189,7 @@ export default function BookingWizard() {
 
                 return (
                     <div className="space-y-6">
-                        <h2 className="text-2xl font-bold text-gray-800">Pick a Time Slot</h2>
+                        <h2 className="text-2xl font-bold text-gray-800">Select Appointment Slot</h2>
 
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Date</label>
