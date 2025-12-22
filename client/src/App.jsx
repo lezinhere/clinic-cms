@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import CareConnect from './pages/CareConnect';
 import ProviderLoginPage from './pages/ProviderLoginPage';
 import PatientLoginPage from './pages/PatientLoginPage';
+import PatientHome from './pages/PatientHome';
 import BookingWizard from './pages/BookingWizard';
 import PatientHistory from './pages/PatientHistory';
 import DoctorDashboard from './pages/DoctorDashboard';
@@ -27,6 +28,7 @@ function App() {
             <Route index element={<LandingPage />} />
             <Route path="care-connect" element={<CareConnect />} />
             <Route path="care-connect/login" element={<ProviderLoginPage />} />
+            <Route path="patient" element={<PatientHome />} />
             <Route path="patient/login" element={<PatientLoginPage />} />
             <Route path="patient/book" element={<BookingWizard />} />
             <Route path="patient/history" element={<PatientHistory />} />

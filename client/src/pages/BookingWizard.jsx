@@ -313,10 +313,10 @@ export default function BookingWizard() {
                             Monitor Appointment Progress
                         </button>
                         <button
-                            onClick={() => navigate("/")}
-                            className="w-full py-4 bg-white text-gray-500 rounded-2xl hover:bg-gray-50 font-bold border-2 border-gray-100 transition-all active:scale-95"
+                            onClick={() => navigate("/patient")}
+                            className="w-full py-4 bg-white text-gray-500 rounded-2xl hover:bg-gray-50 font-bold border-2 border-slate-200 transition-all active:scale-95"
                         >
-                            Back to Home
+                            Back to Patient Portal
                         </button>
                     </div>
                 );
