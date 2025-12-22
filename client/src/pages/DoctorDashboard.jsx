@@ -81,9 +81,10 @@ export default function DoctorDashboard() {
                 <div className="flex gap-4">
                     <button
                         onClick={refreshData}
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg font-bold transition-all active:scale-95"
+                        className={`p-3 rounded-xl bg-white border border-gray-100 text-gray-400 hover:text-blue-600 hover:border-blue-100 transition-all ${loading ? "animate-spin text-blue-600" : ""}`}
+                        title="Refresh Data"
                     >
-                        ↻
+                        ↻ Sync Data
                     </button>
                     <button
                         onClick={() => setWalkInModal(true)}
