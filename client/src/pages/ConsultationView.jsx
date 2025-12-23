@@ -34,7 +34,8 @@ export default function ConsultationView() {
             .then(res => {
                 console.log("Fetch result:", res.data);
                 if (res.data) {
-                    const apt = res.data;
+                    console.log("Full Appointment Data:", apt);
+                    console.log("Doctor Data:", apt.doctor);
                     setDoctor(apt.doctor); // Save doctor info
                     const displayPatient = {
                         ...apt.patient,
@@ -137,8 +138,11 @@ export default function ConsultationView() {
     console.log("ConsultationView Render. Patient:", patient);
 
     if (!patient) return (
-        <div className="min-h-screen flex items-center justify-center text-teal-600 animate-pulse font-bold text-xl">
-            Loading Patient Data (Debug Mode)...
+        <div className="min-h-screen flex items-center justify-center flex-col gap-4 text-teal-600 font-bold text-xl">
+            <span className="animate-pulse">Loading Patient Data...</span>
+            <div className="text-xs text-gray-500 font-mono">
+                Debug: {JSON.stringify({ appointmentId, doctorState: doctor })}
+            </div>
         </div>
     );
 
@@ -180,6 +184,10 @@ export default function ConsultationView() {
                                     <div>
                                         <div className="text-xs font-bold text-teal-600 uppercase tracking-wider">Patient</div>
                                         <div className="text-lg font-bold text-gray-900">{patient?.name || "Unknown"}</div>
+                                        {/* Debug info - remove after fixing */}
+                                        <div className="text-[10px] text-gray-400 font-mono mt-2">
+                                            Doc: {doctor ? `${doctor.name} (${doctor.specialization})` : "NULL"}
+                                        </div>
                                     </div>
                                 </div>
 
