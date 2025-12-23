@@ -167,7 +167,6 @@ export default function DoctorDashboard() {
 
                                         <div className="flex gap-2 w-full sm:w-auto">
                                             <button
-                                            <button
                                                 onClick={() => {
                                                     alert("Debug: Button Clicked"); // Immediate feedback
                                                     if (window.confirm("Cancel this appointment?")) {
