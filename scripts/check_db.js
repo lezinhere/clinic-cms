@@ -22,6 +22,8 @@ async function checkLatestAppointment() {
         console.log("Stored Patient Name:", appointment.patientName);
         console.log("Stored Patient Age:", appointment.patientAge);
         console.log("Stored Patient Sex:", appointment.patientGender);
+        console.log("Appointment Date:", appointment.date);
+        console.log("Slot Time:", appointment.slotTime);
     } catch (error) {
         console.error("Error:", error);
     } finally {

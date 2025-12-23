@@ -16,8 +16,18 @@ export async function GET(req: Request, { params }: { params: Promise<{ doctorId
             include: { patient: true },
             orderBy: { date: "asc" },
         });
-        console.log("Doctor Appointments [0]:", appointments[0] ? JSON.stringify(appointments[0], null, 2) : "None");
-        return NextResponse.json(appointments);
+
+        // Force mapping to ensure fields are present (Prisma sometimes has issues with optional scalars if not selected explicitly)
+        // Although findMany should return them, let's be safe.
+        const safeAppointments = appointments.map(apt => ({
+            ...apt,
+            patientName: apt.patientName, // Explicitly re-assign
+            patientAge: apt.patientAge,
+            patientGender: apt.patientGender
+        }));
+
+        console.log("Doctor Appointments [0]:", safeAppointments[0] ? JSON.stringify(safeAppointments[0], null, 2) : "None");
+        return NextResponse.json(safeAppointments);
     } catch (error) {
         console.error("API GET Doctor Appointments Error:", error);
         return NextResponse.json([], { status: 500 });
