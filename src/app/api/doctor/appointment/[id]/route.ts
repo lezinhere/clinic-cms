@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+// Trigger Rebuild v1.3
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
