@@ -35,18 +35,28 @@ export default function LabRequests() {
         fileInput.onchange = async (e) => {
             const file = e.target.files[0];
             if (file) {
-                setLoading(true);
-                try {
-                    // In a real app, this would be a multipart/form-data upload
-                    await staffApi.completeLabRequest(id, {
-                        result: `PDF Report: ${file.name}`,
-                        staffId: user.id
-                    });
-                    setQueue(queue.filter(q => q.id !== id));
-                } catch (err) {
-                    alert("Failed to upload lab report");
+                // Check file size (limit to 2MB for potential DB/payload limits)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("File is too large (Max 2MB). Please upload a smaller optimized PDF.");
+                    return;
                 }
-                setLoading(false);
+
+                setLoading(true);
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    const base64Data = reader.result; // This is the DataURL
+                    try {
+                        await staffApi.completeLabRequest(id, {
+                            result: `PDF Report: ${base64Data}`, // Save the actual DataURL
+                            staffId: user.id
+                        });
+                        setQueue(queue.filter(q => q.id !== id));
+                    } catch (err) {
+                        alert("Failed to upload lab report: " + (err.response?.data?.error || err.message));
+                    }
+                    setLoading(false);
+                };
+                reader.readAsDataURL(file);
             }
         };
         fileInput.click();

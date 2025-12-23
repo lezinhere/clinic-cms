@@ -154,9 +154,18 @@ export default function PatientHistory() {
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
+                                                                    // Extract the DataURL or Link
                                                                     const url = lab.resultReport.replace('PDF Report:', '').trim();
-                                                                    alert("Debug URL: [" + url + "]");
-                                                                    if (url) window.open(url, '_blank');
+                                                                    if (url) {
+                                                                        const win = window.open();
+                                                                        if (win) {
+                                                                            win.document.write(
+                                                                                `<iframe src="${url}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`
+                                                                            );
+                                                                        } else {
+                                                                            window.location.href = url; // Fallback if popup blocked
+                                                                        }
+                                                                    }
                                                                 }}
                                                                 className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors flex items-center gap-2"
                                                             >
