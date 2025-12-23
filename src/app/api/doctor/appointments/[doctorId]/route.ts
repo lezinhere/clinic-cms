@@ -15,9 +15,38 @@ export async function GET(req: Request, { params }: { params: Promise<{ doctorId
                 status: { in: ["PENDING", "CONFIRMED"] },
                 date: { gte: startOfToday }
             },
-            include: { patient: true },
+            // Explicitly select fields to debug why scalars are missing
+            select: {
+                id: true,
+                patientId: true,
+                doctorId: true,
+                date: true,
+                status: true,
+                slotTime: true,
+                tokenNumber: true,
+                patientName: true, // This is the critical field
+                patientAge: true,
+                patientGender: true,
+                queueStatus: true,
+                patient: {
+                    select: {
+                        id: true,
+                        name: true,
+                        age: true,
+                        sex: true,
+                        phone: true,
+                        displayId: true
+                    }
+                }
+            },
             orderBy: { date: "asc" },
         });
+
+        // Debug Log: Raw Object from Prisma (First Item Only)
+        if (appointments.length > 0) {
+            console.log("DEBUG RAW PRISMA RESULT [0]:", JSON.stringify(appointments[0], null, 2));
+            console.log("DEBUG KEYS:", Object.keys(appointments[0]));
+        }
 
         // Force mapping to ensure fields are present (Prisma sometimes has issues with optional scalars if not selected explicitly)
         // Although findMany should return them, let's be safe.
