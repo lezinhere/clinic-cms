@@ -9,6 +9,8 @@ export default function PatientHistory() {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [viewingReport, setViewingReport] = useState(null);
+
     useEffect(() => {
         if (user) {
             const paramId = searchParams.get('patientId');
@@ -157,14 +159,7 @@ export default function PatientHistory() {
                                                                     // Extract the DataURL or Link
                                                                     const url = lab.resultReport.replace('PDF Report:', '').trim();
                                                                     if (url) {
-                                                                        const win = window.open();
-                                                                        if (win) {
-                                                                            win.document.write(
-                                                                                `<iframe src="${url}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`
-                                                                            );
-                                                                        } else {
-                                                                            window.location.href = url; // Fallback if popup blocked
-                                                                        }
+                                                                        setViewingReport(url);
                                                                     }
                                                                 }}
                                                                 className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors flex items-center gap-2"
@@ -193,7 +188,31 @@ export default function PatientHistory() {
                         )}
                     </div>
                 ))}
-            </div>
+            </div>    {/* PDF Viewer Modal */}
+            {viewingReport && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+                        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                            <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                                <span className="text-xl">📄</span> Medical Report Viewer
+                            </h3>
+                            <button
+                                onClick={() => setViewingReport(null)}
+                                className="h-8 w-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors font-bold"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div className="flex-1 bg-gray-100 p-2">
+                            <iframe
+                                src={viewingReport}
+                                className="w-full h-full rounded-xl bg-white border border-gray-200"
+                                title="Report Preview"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
