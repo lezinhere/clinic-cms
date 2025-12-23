@@ -88,14 +88,14 @@ export default function PharmacyQueue() {
                             <div className="p-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-start">
                                 <div className="flex items-center gap-3">
                                     <div className="h-10 w-10 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center font-bold text-lg">
-                                        {item.consultation.appointment.patient.name.charAt(0)}
+                                        {(item.consultation.appointment.patientName || item.consultation.appointment.patient.name).charAt(0)}
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-gray-900 leading-tight">
-                                            {item.consultation.appointment.patient.name}
+                                            {item.consultation.appointment.patientName || item.consultation.appointment.patient.name}
                                         </h3>
                                         <p className="text-xs font-medium text-gray-500 mt-0.5">
-                                            {item.consultation.appointment.patient.sex?.charAt(0)} • {item.consultation.appointment.patient.age} Yrs
+                                            {(item.consultation.appointment.patientGender || item.consultation.appointment.patient.sex)?.charAt(0)} • {item.consultation.appointment.patientAge || item.consultation.appointment.patient.age} Yrs
                                         </p>
                                     </div>
                                 </div>

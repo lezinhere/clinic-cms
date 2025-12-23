@@ -42,6 +42,7 @@ model Appointment {
   doctorId  String   @db.ObjectId
   date      DateTime
   status    String    @default("PENDING") // Was Enum AppointmentStatus
+  queueStatus String  @default("CHECK_IN") // CHECK_IN, DOCTOR, PHARMACY, LAB, COMPLETED
   
   // Booking Slot & Token
   slotTime    String? // e.g. "09:00 - 10:00"

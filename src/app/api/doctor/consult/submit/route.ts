@@ -70,7 +70,10 @@ export async function POST(req: Request) {
             // 4. Update Appointment
             await tx.appointment.update({
                 where: { id: appointmentId },
-                data: { status: "COMPLETED" },
+                data: {
+                    status: "COMPLETED",
+                    queueStatus: (prescriptions && prescriptions.length > 0) ? "PHARMACY" : "COMPLETED"
+                },
             });
         }, {
             maxWait: 5000,
