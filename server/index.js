@@ -471,7 +471,10 @@ app.post('/api/patient/book', async (req, res) => {
 app.get('/api/patient/history/:id', async (req, res) => {
     try {
         const history = await prisma.appointment.findMany({
-            where: { patientId: req.params.id },
+            where: {
+                patientId: req.params.id,
+                status: { not: "CANCELLED" }
+            },
             include: {
                 doctor: { select: { name: true } },
                 consultation: {
