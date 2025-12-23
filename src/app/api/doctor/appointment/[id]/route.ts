@@ -25,17 +25,23 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
         // FORCE FETCH DOCTOR
         // We do this manually to ensure we definitely get the data
+        let doctorData = null;
         if (appointment.doctorId) {
             const doctor = await prisma.user.findUnique({
                 where: { id: appointment.doctorId }
             });
             console.log("API: Manually fetched doctor:", doctor ? doctor.name : "Not Found");
-            (appointment as any).doctor = doctor;
-        } else {
-            console.warn("API: Appointment has no doctorId");
+            doctorData = doctor;
         }
 
-        return NextResponse.json(appointment);
+        // Create a plain object to ensure serialization works
+        const responseData = {
+            ...appointment,
+            doctor: doctorData,
+            _apiVersion: "1.2-forced-serialization"
+        };
+
+        return NextResponse.json(responseData);
     } catch (error: any) {
         console.error("API GET Doctor Appointment Detail Error:", error);
         return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 });
