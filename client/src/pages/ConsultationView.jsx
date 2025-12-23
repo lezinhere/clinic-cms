@@ -13,6 +13,7 @@ export default function ConsultationView() {
     const [showSummary, setShowSummary] = useState(false);
     const [loadError, setLoadError] = useState(null);
     const [debugData, setDebugData] = useState(null);
+    const [fallbackStatus, setFallbackStatus] = useState("Idle");
 
     // Form State
     const [diagnosis, setDiagnosis] = useState("");
