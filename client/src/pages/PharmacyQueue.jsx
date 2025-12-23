@@ -8,6 +8,7 @@ export default function PharmacyQueue() {
     const navigate = useNavigate();
     const [queue, setQueue] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [confirmingId, setConfirmingId] = useState(null);
 
     useEffect(() => {
         if (user && user.role === "PHARMACY") {
@@ -27,13 +28,12 @@ export default function PharmacyQueue() {
     };
 
     const handleDispense = async (id) => {
-        if (window.confirm("Confirm dispense medicines to patient?")) {
-            try {
-                await staffApi.dispensePrescription(id, user.id);
-                setQueue(queue.filter(q => q.id !== id));
-            } catch (err) {
-                alert("Failed to dispense prescription");
-            }
+        try {
+            await staffApi.dispensePrescription(id, user.id);
+            setQueue(queue.filter(q => q.id !== id));
+            setConfirmingId(null);
+        } catch (err) {
+            alert("Failed to dispense prescription: " + (err.response?.data?.error || err.message));
         }
     };
 
@@ -129,13 +129,22 @@ export default function PharmacyQueue() {
                                         <span className="font-medium">Dr. {item.consultation.appointment.doctor.name}</span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => handleDispense(item.id)}
-                                    className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl font-semibold shadow-sm shadow-teal-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
-                                >
-                                    <span>Dispense Medicines</span>
-                                    <span>→</span>
-                                </button>
+                                {confirmingId === item.id ? (
+                                    <button
+                                        onClick={() => handleDispense(item.id)}
+                                        className="w-full bg-teal-800 hover:bg-teal-900 text-white py-2.5 rounded-xl font-bold shadow-sm shadow-teal-100 transition-all animate-pulse text-sm"
+                                    >
+                                        Confirm Dispense?
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => setConfirmingId(item.id)}
+                                        className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl font-semibold shadow-sm shadow-teal-100 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
+                                    >
+                                        <span>Dispense Medicines</span>
+                                        <span>→</span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}
