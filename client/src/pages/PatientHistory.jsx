@@ -17,7 +17,9 @@ export default function PatientHistory() {
             const targetId = (user.role === 'DOCTOR' && paramId) ? paramId : user.id;
 
             patientApi.getHistory(targetId).then((res) => {
-                setAppointments(res.data);
+                // Client-side filter as robust fallback for cancelled appointments
+                const activeHistory = res.data.filter(apt => apt.status !== 'CANCELLED');
+                setAppointments(activeHistory);
                 setLoading(false);
             }).catch(() => setLoading(false));
         }

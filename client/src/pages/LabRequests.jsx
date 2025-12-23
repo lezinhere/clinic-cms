@@ -135,9 +135,13 @@ export default function LabRequests() {
                                 <div className="space-y-3">
                                     <div>
                                         <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Patient</h4>
-                                        <p className="font-bold text-gray-900">{item.consultation.appointment.patient.name}</p>
+                                        <p className="font-bold text-gray-900">
+                                            {item.consultation.appointment.patientName || item.consultation.appointment.patient.name}
+                                        </p>
                                         <p className="text-xs text-gray-500">
-                                            {item.consultation.appointment.patient.sex} • {item.consultation.appointment.patient.age}Y • PT-{item.consultation.appointment.patient.id.slice(-4)}
+                                            {item.consultation.appointment.patientGender || item.consultation.appointment.patient.sex} •
+                                            {item.consultation.appointment.patientAge || item.consultation.appointment.patient.age}Y •
+                                            PT-{item.consultation.appointment.patient.id.slice(-4)}
                                         </p>
                                     </div>
                                     <div>
