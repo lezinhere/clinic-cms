@@ -303,6 +303,8 @@ export default function ConsultationView() {
                                 {!doctor?.name && (
                                     <div className="text-[10px] font-mono text-red-500 break-words w-96 border border-red-500 p-1 bg-red-50">
                                         DEBUG RAW: {JSON.stringify(debugData)}
+                                        <br />
+                                        <strong>Global Doc State: {JSON.stringify(doctor)}</strong>
                                     </div>
                                 )}
                             </div>
