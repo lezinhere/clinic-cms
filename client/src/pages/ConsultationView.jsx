@@ -174,43 +174,43 @@ export default function ConsultationView() {
                             </div>
 
                             {/* PRINT ONLY HEADER (Template Match) */}
-                            <div className="hidden print:block p-10 font-serif text-black">
+                            <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 font-serif text-black h-screen w-screen overflow-visible">
                                 {/* Header: Doctor & Date */}
-                                <div className="flex justify-between items-start mb-2">
+                                <div className="flex justify-between items-start mb-1">
                                     <div>
                                         <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
-                                        <p className="text-lg text-black font-medium uppercase">{doctor?.specialization || "General Physician"}</p>
+                                        <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
                                     </div>
                                     <div className="flex items-end gap-2 mt-4">
                                         <span className="font-bold text-sm">Date:</span>
-                                        <div className="border-b border-gray-400 w-32 text-center pb-1 text-sm font-semibold">
+                                        <div className="border-b border-gray-900 w-32 text-center pb-1 text-sm font-bold">
                                             {new Date().toLocaleDateString('en-GB')}
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Purple Separator */}
-                                <div className="h-1 bg-[#8B5CF6] w-full mb-8"></div>
+                                {/* Purple Separator - Exact Match */}
+                                <div className="h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
 
-                                {/* Patient Details */}
+                                {/* Patient Details - Exact Match */}
                                 <div className="flex flex-col gap-6 mb-12">
-                                    <div className="flex items-end gap-2 w-full">
+                                    <div className="flex items-end gap-2 w-2/3">
                                         <span className="font-bold text-sm whitespace-nowrap">Patient's name:</span>
-                                        <div className="border-b border-gray-400 flex-1 text-lg font-semibold px-2 pb-1 relative top-1">
+                                        <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 relative translate-y-1">
                                             {patient?.name}
                                         </div>
                                     </div>
                                     <div className="flex items-end gap-2 w-1/3">
                                         <span className="font-bold text-sm">Age:</span>
-                                        <div className="border-b border-gray-400 flex-1 text-lg font-semibold px-2 pb-1 text-center relative top-1">
+                                        <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
                                             {patient?.age}
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* RX Symbol */}
-                                <div className="mb-8">
-                                    <h1 className="text-6xl font-serif">RX</h1>
+                                <div className="mb-6">
+                                    <h1 className="text-7xl font-serif">RX</h1>
                                 </div>
 
                                 {/* Prescription Content */}
@@ -218,27 +218,31 @@ export default function ConsultationView() {
                                     {/* Diagnosis if present */}
                                     {diagnosis && (
                                         <div className="mb-6">
-                                            <span className="font-bold underline">Diagnosis:</span> {diagnosis}
+                                            <span className="font-bold underline">Diagnosis:</span> <span className="font-medium">{diagnosis}</span>
                                         </div>
                                     )}
 
                                     {/* Medicines List */}
                                     {prescriptions.length > 0 && (
-                                        <ul className="list-decimal pl-6 space-y-4 text-lg">
+                                        <div className="ml-4 space-y-6">
                                             {prescriptions.map((p, i) => (
-                                                <li key={i}>
-                                                    <div className="font-bold">{p.medicineName}</div>
-                                                    <div className="text-sm pl-1">{p.dosage} &mdash; {p.period}</div>
-                                                </li>
+                                                <div key={i} className="text-lg">
+                                                    <div className="font-bold text-black">{p.medicineName}</div>
+                                                    <div className="text-base pl-1 text-gray-800 flex gap-4 mt-1">
+                                                        <span>{p.dosage}</span>
+                                                        <span>&mdash;</span>
+                                                        <span>{p.period}</span>
+                                                    </div>
+                                                </div>
                                             ))}
-                                        </ul>
+                                        </div>
                                     )}
 
                                     {/* Lab Requests */}
                                     {labRequests.length > 0 && (
-                                        <div className="mt-8">
-                                            <h4 className="font-bold underline mb-2">Lab Investigations:</h4>
-                                            <ul className="list-disc pl-6 space-y-1">
+                                        <div className="mt-10">
+                                            <h4 className="font-bold underline mb-3 text-lg">Lab Investigations:</h4>
+                                            <ul className="list-disc pl-6 space-y-2 text-lg">
                                                 {labRequests.map((l, i) => (
                                                     <li key={i}>{l.testName}</li>
                                                 ))}
@@ -248,17 +252,17 @@ export default function ConsultationView() {
 
                                     {/* Notes */}
                                     {notes && (
-                                        <div className="mt-8 italic text-sm">
+                                        <div className="mt-10 pt-4 border-t border-gray-100 italic text-sm text-gray-600">
                                             Note: {notes}
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Footer: Signature */}
-                                <div className="mt-auto pt-16 flex justify-end">
-                                    <div className="text-center w-64">
-                                        <div className="border-t border-gray-400 w-full mb-2"></div>
-                                        <span className="text-lg font-semibold">Signature</span>
+                                <div className="fixed bottom-12 right-12 w-64">
+                                    <div className="text-center">
+                                        <div className="border-t border-gray-900 w-full mb-2"></div>
+                                        <span className="text-lg font-bold">Signature</span>
                                     </div>
                                 </div>
                             </div>
