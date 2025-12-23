@@ -9,4 +9,5 @@ export const doctorApi = {
     submitConsultation: (data) => api.post('/doctor/consult/submit', data),
     instantBook: (data) => api.post('/doctor/instant-book', data),
     cancelAppointment: (id) => api.post(`/doctor/appointment/${id}/cancel`, { status: 'CANCELLED' }),
+    getDoctorById: (id) => api.get(`/doctor/profile/${id}`),
 };

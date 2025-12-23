@@ -37,8 +37,18 @@ export default function ConsultationView() {
                 if (res.data) {
                     const apt = res.data;
                     console.log("Full Appointment Data:", apt);
-                    console.log("Doctor Data:", apt.doctor);
-                    setDoctor(apt.doctor); // Save doctor info
+                    if (apt.doctor) {
+                        setDoctor(apt.doctor);
+                    } else if (apt.doctorId) {
+                        console.log("Doctor data missing in appointment, fetching separately...", apt.doctorId);
+                        doctorApi.getDoctorById(apt.doctorId)
+                            .then(docRes => {
+                                console.log("Fetched Doctor Fallback:", docRes.data);
+                                setDoctor(docRes.data);
+                            })
+                            .catch(e => console.error("Fallback fetch failed", e));
+                    }
+
                     const displayPatient = {
                         ...apt.patient,
                         name: apt.patientName || apt.patient.name,
