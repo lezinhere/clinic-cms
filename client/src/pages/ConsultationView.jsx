@@ -35,6 +35,7 @@ export default function ConsultationView() {
             .then(res => {
                 console.log("Fetch result:", res.data);
                 if (res.data) {
+                    const apt = res.data;
                     console.log("Full Appointment Data:", apt);
                     console.log("Doctor Data:", apt.doctor);
                     setDoctor(apt.doctor); // Save doctor info
