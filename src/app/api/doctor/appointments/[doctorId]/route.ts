@@ -52,9 +52,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ doctorId
         // Although findMany should return them, let's be safe.
         const safeAppointments = appointments.map(apt => ({
             ...apt,
-            patientName: apt.patientName, // Explicitly re-assign
-            patientAge: apt.patientAge,
-            patientGender: apt.patientGender
+            patientName: "MOCKED_TEST_NAME", // HARDCODED TEST
+            patientAge: 99,
+            patientGender: "TestGender"
         }));
 
         console.log("Doctor Appointments [0]:", safeAppointments[0] ? JSON.stringify(safeAppointments[0], null, 2) : "None");
