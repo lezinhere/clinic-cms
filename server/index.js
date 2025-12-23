@@ -143,7 +143,15 @@ app.get('/api/doctor/appointments/:doctorId', async (req, res) => {
             include: { patient: true },
             orderBy: { date: "asc" },
         });
-        res.json(appointments);
+
+        const safeAppointments = appointments.map(apt => ({
+            ...apt,
+            patientName: apt.patientName || apt.patient?.name,
+            patientAge: apt.patientAge || apt.patient?.age,
+            patientGender: apt.patientGender || apt.patient?.sex
+        }));
+
+        res.json(safeAppointments);
     } catch (error) {
         res.status(500).json([]);
     }
@@ -590,7 +598,11 @@ app.delete('/api/admin/staff/:id', async (req, res) => {
 app.get('/api/pharmacy/queue', async (req, res) => {
     try {
         const queue = await prisma.prescription.findMany({
-            where: { isDispensed: false },
+            where: {
+                isDispensed: false,
+                // Add queueStatus check if possible, but schema might not match strict types here.
+                // kept simple for now matching legacy structure
+            },
             include: {
                 items: { include: { medicine: true } },
                 consultation: {
@@ -599,6 +611,13 @@ app.get('/api/pharmacy/queue', async (req, res) => {
             },
             orderBy: { createdAt: "asc" },
         });
+
+        // Ensure patient details are accessible from the top level if needed by frontend
+        // Frontend uses item.consultation.appointment.patient...
+        // The previous frontend fix I requested handled the fallback path, so this might be fine.
+        // But let's verify if I should map here.
+        // The specific bug is about Doctor Dashboard (appointment list), so the previous edit is the critical one.
+
         res.json(queue);
     } catch (error) {
         res.status(500).json([]);
