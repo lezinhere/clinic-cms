@@ -308,19 +308,29 @@ export default function ConsultationView() {
                                 </div>
                             )}
 
-                            {/* Medicines List */}
+                            {/* Medicines List - Table Format */}
                             {prescriptions.length > 0 && (
-                                <div className="ml-4 space-y-6">
-                                    {prescriptions.map((p, i) => (
-                                        <div key={i} className="text-lg">
-                                            <div className="font-bold text-black">{p.medicineName}</div>
-                                            <div className="text-base pl-1 text-gray-800 flex gap-4 mt-1">
-                                                <span>{p.dosage}</span>
-                                                <span>&mdash;</span>
-                                                <span>{p.period}</span>
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className="ml-0 mt-6 mb-8">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="border-b border-gray-400">
+                                                <th className="py-2 text-sm font-bold w-12 text-center">Sl.No</th>
+                                                <th className="py-2 text-sm font-bold">Medicine Name</th>
+                                                <th className="py-2 text-sm font-bold">Dosage</th>
+                                                <th className="py-2 text-sm font-bold">Period</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {prescriptions.map((p, i) => (
+                                                <tr key={i} className="border-b border-gray-200">
+                                                    <td className="py-3 text-sm text-center font-semibold">{i + 1}</td>
+                                                    <td className="py-3 text-lg font-bold">{p.medicineName}</td>
+                                                    <td className="py-3 text-base font-medium">{p.dosage}</td>
+                                                    <td className="py-3 text-base">{p.period}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                             )}
 

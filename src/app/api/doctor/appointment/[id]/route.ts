@@ -6,7 +6,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         const { id } = await params;
         const appointment = await prisma.appointment.findUnique({
             where: { id },
-            include: { patient: true },
+            include: {
+                patient: true,
+                doctor: true
+            },
         });
         return NextResponse.json(appointment);
     } catch (error) {
