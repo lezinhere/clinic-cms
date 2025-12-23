@@ -154,7 +154,9 @@ export default function PatientHistory() {
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-                                                                    window.open(lab.resultReport.replace('PDF Report:', '').trim(), '_blank');
+                                                                    const url = lab.resultReport.replace('PDF Report:', '').trim();
+                                                                    alert("Debug URL: [" + url + "]");
+                                                                    if (url) window.open(url, '_blank');
                                                                 }}
                                                                 className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors flex items-center gap-2"
                                                             >
