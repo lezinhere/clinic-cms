@@ -15,15 +15,24 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
         const appointment = await prisma.appointment.findUnique({
             where: { id },
-            include: {
-                patient: true,
-                doctor: true
-            },
+            include: { patient: true } // Keep patient include as it seems to work
         });
 
         if (!appointment) {
             console.error("API: Appointment not found for ID:", id);
             return NextResponse.json({ error: "Not Found" }, { status: 404 });
+        }
+
+        // FORCE FETCH DOCTOR
+        // We do this manually to ensure we definitely get the data
+        if (appointment.doctorId) {
+            const doctor = await prisma.user.findUnique({
+                where: { id: appointment.doctorId }
+            });
+            console.log("API: Manually fetched doctor:", doctor ? doctor.name : "Not Found");
+            (appointment as any).doctor = doctor;
+        } else {
+            console.warn("API: Appointment has no doctorId");
         }
 
         return NextResponse.json(appointment);

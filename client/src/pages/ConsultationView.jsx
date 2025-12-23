@@ -298,10 +298,9 @@ export default function ConsultationView() {
                             <div>
                                 <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
                                 <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
-                                {/* Print Debug - visible only if doctor is null/default to help diagnose */}
                                 {!doctor?.name && (
                                     <div className="text-[8px] font-mono text-red-500">
-                                        DEBUG: DocState is {JSON.stringify(doctor)}
+                                        DEBUG: DocState is {JSON.stringify(doctor)} | ID: {patient?.doctorId || "N/A"}
                                     </div>
                                 )}
                             </div>
