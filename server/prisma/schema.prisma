@@ -42,10 +42,16 @@ model Appointment {
   doctorId  String   @db.ObjectId
   date      DateTime
   status    String    @default("PENDING") // Was Enum AppointmentStatus
+  queueStatus String  @default("CHECK_IN") // CHECK_IN, DOCTOR, PHARMACY, LAB, COMPLETED
   
   // Booking Slot & Token
   slotTime    String? // e.g. "09:00 - 10:00"
   tokenNumber Int?    // e.g. 1
+  
+  // Actual Patient Details (for Family Booking)
+  patientName   String?
+  patientAge    Int?
+  patientGender String?
   
   patient   User @relation("PatientAppointments", fields: [patientId], references: [id])
   doctor    User @relation("DoctorAppointments", fields: [doctorId], references: [id])
