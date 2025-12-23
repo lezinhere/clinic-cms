@@ -75,7 +75,7 @@ export default function DoctorDashboard() {
         <div className="max-w-5xl mx-auto p-6">
             <header className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+                    <h1 className="text-3xl font-bold text-gray-800">Dashboard <span className="text-xs text-red-500 bg-red-100 px-2 py-1 rounded">v2.1</span></h1>
                     <p className="text-gray-500">Welcome back, Dr. {user.name}</p>
                 </div>
                 <div className="flex gap-4">
