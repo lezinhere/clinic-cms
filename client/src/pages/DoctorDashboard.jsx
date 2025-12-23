@@ -145,13 +145,13 @@ export default function DoctorDashboard() {
                                     <div key={apt.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div className="flex items-center gap-4">
                                             <div className="h-14 w-14 bg-blue-50 text-blue-600 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xl">
-                                                {apt.patient?.name?.charAt(0) || 'P'}
+                                                {(apt.patientName || apt.patient?.name)?.charAt(0) || 'P'}
                                             </div>
                                             <div>
-                                                <h3 className="text-lg font-bold text-gray-800">{apt.patient?.name}</h3>
+                                                <h3 className="text-lg font-bold text-gray-800">{apt.patientName || apt.patient?.name}</h3>
                                                 <div className="text-sm text-gray-500 flex flex-wrap gap-x-3 gap-y-1 mt-1">
-                                                    <span>{apt.patient?.age} yrs</span>
-                                                    <span>{apt.patient?.sex}</span>
+                                                    <span>{apt.patientAge || apt.patient?.age} yrs</span>
+                                                    <span>{apt.patientGender || apt.patient?.sex}</span>
                                                     {apt.tokenNumber && (
                                                         <span className="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs font-bold">
                                                             Token #{apt.tokenNumber}
@@ -202,7 +202,6 @@ export default function DoctorDashboard() {
                                             </div>
                                             <div>
                                                 <h3 className="font-bold text-gray-900">{apt.patientName || apt.patient.name}</h3>
-                                                <p className="text-xs text-red-500 font-mono">DEBUG: Sent: {apt.patientName || 'NULL'} | Account: {apt.patient.name}</p>
                                                 <p className="text-sm text-gray-500">
                                                     {apt.patientAge || apt.patient.age} yrs • {apt.patientGender || apt.patient.sex} • <span className="font-mono bg-teal-50 text-teal-700 px-2 rounded">{apt.tokenNumber ? `Token #${apt.tokenNumber}` : 'No Token'}</span>
                                                 </p>
