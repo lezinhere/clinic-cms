@@ -162,115 +162,18 @@ export default function ConsultationView() {
             </header>
 
             <main className="max-w-[1600px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Review Modal */}
+                {/* Review Modal - Screen Only */}
                 {showSummary && (
-                    <div className="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden print:shadow-none print:w-full print:max-w-none print:h-auto print:rounded-none">
-
-                            {/* SCREEN ONLY HEADER */}
-                            <div className="p-6 border-b flex justify-between items-center bg-gray-50 print:hidden">
+                    <div className="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200 print:hidden">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+                            <div className="p-6 border-b flex justify-between items-center bg-gray-50">
                                 <h2 className="text-xl font-bold text-gray-900">Medical Prescription & Report</h2>
                                 <button onClick={() => setShowSummary(false)} className="text-gray-400 hover:text-gray-600">✕</button>
                             </div>
 
-                            {/* PRINT ONLY HEADER (Template Match) */}
-                            <div className="hidden print:block fixed inset-0 bg-white z-[9999] p-12 font-serif text-black h-screen w-screen overflow-visible">
-                                {/* Header: Doctor & Date */}
-                                <div className="flex justify-between items-start mb-1">
-                                    <div>
-                                        <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
-                                        <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
-                                    </div>
-                                    <div className="flex items-end gap-2 mt-4">
-                                        <span className="font-bold text-sm">Date:</span>
-                                        <div className="border-b border-gray-900 w-32 text-center pb-1 text-sm font-bold">
-                                            {new Date().toLocaleDateString('en-GB')}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Purple Separator - Exact Match */}
-                                <div className="h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
-
-                                {/* Patient Details - Exact Match */}
-                                <div className="flex flex-col gap-6 mb-12">
-                                    <div className="flex items-end gap-2 w-2/3">
-                                        <span className="font-bold text-sm whitespace-nowrap">Patient's name:</span>
-                                        <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 relative translate-y-1">
-                                            {patient?.name}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-end gap-2 w-1/3">
-                                        <span className="font-bold text-sm">Age:</span>
-                                        <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
-                                            {patient?.age}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* RX Symbol */}
-                                <div className="mb-6">
-                                    <h1 className="text-7xl font-serif">RX</h1>
-                                </div>
-
-                                {/* Prescription Content */}
-                                <div className="min-h-[400px]">
-                                    {/* Diagnosis if present */}
-                                    {diagnosis && (
-                                        <div className="mb-6">
-                                            <span className="font-bold underline">Diagnosis:</span> <span className="font-medium">{diagnosis}</span>
-                                        </div>
-                                    )}
-
-                                    {/* Medicines List */}
-                                    {prescriptions.length > 0 && (
-                                        <div className="ml-4 space-y-6">
-                                            {prescriptions.map((p, i) => (
-                                                <div key={i} className="text-lg">
-                                                    <div className="font-bold text-black">{p.medicineName}</div>
-                                                    <div className="text-base pl-1 text-gray-800 flex gap-4 mt-1">
-                                                        <span>{p.dosage}</span>
-                                                        <span>&mdash;</span>
-                                                        <span>{p.period}</span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {/* Lab Requests */}
-                                    {labRequests.length > 0 && (
-                                        <div className="mt-10">
-                                            <h4 className="font-bold underline mb-3 text-lg">Lab Investigations:</h4>
-                                            <ul className="list-disc pl-6 space-y-2 text-lg">
-                                                {labRequests.map((l, i) => (
-                                                    <li key={i}>{l.testName}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-
-                                    {/* Notes */}
-                                    {notes && (
-                                        <div className="mt-10 pt-4 border-t border-gray-100 italic text-sm text-gray-600">
-                                            Note: {notes}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Footer: Signature */}
-                                <div className="fixed bottom-12 right-12 w-64">
-                                    <div className="text-center">
-                                        <div className="border-t border-gray-900 w-full mb-2"></div>
-                                        <span className="text-lg font-bold">Signature</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-8 overflow-y-auto space-y-6 print:overflow-visible print:p-8">
-
-                                {/* SCREEN: Patient Card (Hide on print as it is replaced by header above) */}
-                                <div className="flex gap-6 p-4 bg-teal-50/50 rounded-xl border border-teal-100 items-center print:hidden">
+                            <div className="p-8 overflow-y-auto space-y-6">
+                                {/* Screen Preview Content */}
+                                <div className="flex gap-6 p-4 bg-teal-50/50 rounded-xl border border-teal-100 items-center">
                                     <div className="h-14 w-14 bg-white text-teal-700 rounded-full flex items-center justify-center font-bold text-xl border-2 border-teal-100 shadow-sm">
                                         {patient?.name?.charAt(0) || "?"}
                                     </div>
@@ -280,38 +183,35 @@ export default function ConsultationView() {
                                     </div>
                                 </div>
 
-                                {/* Common Body (Diagnosis & Followup) */}
-                                <div className="grid grid-cols-2 gap-6 print:gap-12 print:mb-8">
+                                <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-1">
-                                        <div className="text-xs font-bold text-gray-400 uppercase print:text-slate-500">Diagnosis</div>
-                                        <div className="font-semibold text-gray-800 font-serif print:text-xl print:text-slate-900">{diagnosis}</div>
+                                        <div className="text-xs font-bold text-gray-400 uppercase">Diagnosis</div>
+                                        <div className="font-semibold text-gray-800 font-serif">{diagnosis}</div>
                                     </div>
                                     <div className="space-y-1 text-right">
-                                        <div className="text-xs font-bold text-gray-400 uppercase print:text-slate-500">Next Review</div>
-                                        <div className="font-semibold text-gray-800 font-serif print:text-lg">{nextVisit || "Not Scheduled"}</div>
+                                        <div className="text-xs font-bold text-gray-400 uppercase">Next Review</div>
+                                        <div className="font-semibold text-gray-800 font-serif">{nextVisit || "Not Scheduled"}</div>
                                     </div>
                                 </div>
 
                                 {(prescriptions.length > 0) && (
-                                    <div className="print:mb-8">
+                                    <div>
                                         <div className="flex items-center gap-2 mb-4">
                                             <span className="text-xl font-serif font-bold text-slate-900">Rx</span>
                                             <div className="h-px bg-slate-200 flex-1"></div>
                                         </div>
-
-                                        {/* Table for Print/Screen */}
-                                        <table className="w-full text-left text-sm print:text-base">
-                                            <thead className="bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider print:bg-transparent print:border-b print:border-slate-800 print:text-slate-900">
+                                        <table className="w-full text-left text-sm">
+                                            <thead className="bg-gray-50 text-gray-500 font-semibold uppercase text-xs tracking-wider">
                                                 <tr>
-                                                    <th className="px-4 py-2 print:pl-0">Medicine</th>
+                                                    <th className="px-4 py-2">Medicine</th>
                                                     <th className="px-4 py-2">Dosage</th>
                                                     <th className="px-4 py-2 text-right">Duration</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-gray-100 print:divide-slate-200">
+                                            <tbody className="divide-y divide-gray-100">
                                                 {prescriptions.map((p, i) => (
                                                     <tr key={i}>
-                                                        <td className="px-4 py-3 font-bold text-gray-800 print:pl-0 font-serif">{p.medicineName}</td>
+                                                        <td className="px-4 py-3 font-bold text-gray-800 font-serif">{p.medicineName}</td>
                                                         <td className="px-4 py-3 font-mono text-slate-600">{p.dosage}</td>
                                                         <td className="px-4 py-3 text-right text-slate-600">{p.period}</td>
                                                     </tr>
@@ -322,14 +222,14 @@ export default function ConsultationView() {
                                 )}
 
                                 {labRequests.length > 0 && (
-                                    <div className="print:mb-8">
+                                    <div>
                                         <div className="flex items-center gap-2 mb-4">
                                             <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Lab Investigations</span>
                                             <div className="h-px bg-slate-200 flex-1"></div>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
                                             {labRequests.map((l, i) => (
-                                                <span key={i} className="px-2 py-1 bg-purple-50 text-purple-700 rounded border border-purple-100 text-xs font-medium print:bg-white print:border-slate-300 print:text-slate-800 print:px-0 print:border-0 print:mr-4 print:text-sm">
+                                                <span key={i} className="px-2 py-1 bg-purple-50 text-purple-700 rounded border border-purple-100 text-xs font-medium">
                                                     • {l.testName}
                                                 </span>
                                             ))}
@@ -338,31 +238,14 @@ export default function ConsultationView() {
                                 )}
 
                                 {notes && (
-                                    <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 print:bg-white print:border-0 print:p-0 print:mt-6">
-                                        <div className="text-xs font-bold text-amber-600 uppercase mb-1 print:text-slate-500 print:mb-2">Advice / Notes</div>
-                                        <p className="text-sm text-gray-700 italic print:not-italic print:text-slate-900 font-serif">{notes}</p>
+                                    <div className="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                                        <div className="text-xs font-bold text-amber-600 uppercase mb-1">Advice / Notes</div>
+                                        <p className="text-sm text-gray-700 italic font-serif">{notes}</p>
                                     </div>
                                 )}
-
-                                {/* VISIBLE SIGNATURE BLOCK (Print Only) */}
-                                <div className="hidden print:block mt-16 pt-8">
-                                    <div className="flex justify-end">
-                                        <div className="text-center">
-                                            {/* Spacer for actual signature */}
-                                            <div className="h-16 w-48 mb-2"></div>
-                                            <div className="border-t border-slate-800 w-48 mx-auto"></div>
-                                            <p className="text-sm font-bold text-slate-900 mt-2">Dr. {doctor?.name}</p>
-                                            <p className="text-xs text-slate-500">Authorized Signature</p>
-                                        </div>
-                                    </div>
-                                    {/* Footer */}
-                                    <div className="border-t border-slate-200 mt-12 pt-4 text-center">
-                                        <p className="text-[10px] text-slate-400 uppercase tracking-widest">Technopark Phase 3 • Trivandrum • +91 900 000 0000</p>
-                                    </div>
-                                </div>
                             </div>
 
-                            <div className="p-6 border-t bg-gray-50 flex gap-3 justify-end print:hidden">
+                            <div className="p-6 border-t bg-gray-50 flex gap-3 justify-end">
                                 <button onClick={() => window.print()} className="px-6 py-2.5 text-blue-600 font-bold hover:bg-blue-50 rounded-lg border border-blue-200 transition-colors flex items-center gap-2">
                                     <span>🖨️</span> Print
                                 </button>
@@ -370,6 +253,102 @@ export default function ConsultationView() {
                                 <button onClick={handleConfirmSubmit} disabled={loading} className="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-lg shadow-sm hover:bg-teal-700 transition-all">
                                     {loading ? "Submitting..." : "Confirm & Sign"}
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* DEDICATED PRINT VIEW - Outside Modal Stacking Context */}
+                {showSummary && (
+                    <div className="hidden print:block fixed inset-0 bg-white z-[10000] p-10 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0">
+                        {/* Header: Doctor & Date */}
+                        <div className="flex justify-between items-start mb-1">
+                            <div>
+                                <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
+                                <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
+                            </div>
+                            <div className="flex items-end gap-2 mt-4">
+                                <span className="font-bold text-sm">Date:</span>
+                                <div className="border-b border-gray-900 w-32 text-center pb-1 text-sm font-bold">
+                                    {new Date().toLocaleDateString('en-GB')}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Purple Separator */}
+                        <div className="h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
+
+                        {/* Patient Details */}
+                        <div className="flex flex-col gap-6 mb-12">
+                            <div className="flex items-end gap-2 w-2/3">
+                                <span className="font-bold text-sm whitespace-nowrap">Patient's name:</span>
+                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 relative translate-y-1">
+                                    {patient?.name}
+                                </div>
+                            </div>
+                            <div className="flex items-end gap-2 w-1/3">
+                                <span className="font-bold text-sm">Age:</span>
+                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
+                                    {patient?.age}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* RX Symbol */}
+                        <div className="mb-6">
+                            <h1 className="text-7xl font-serif">RX</h1>
+                        </div>
+
+                        {/* Prescription Content */}
+                        <div className="min-h-[400px]">
+                            {/* Diagnosis */}
+                            {diagnosis && (
+                                <div className="mb-6">
+                                    <span className="font-bold underline">Diagnosis:</span> <span className="font-medium">{diagnosis}</span>
+                                </div>
+                            )}
+
+                            {/* Medicines List */}
+                            {prescriptions.length > 0 && (
+                                <div className="ml-4 space-y-6">
+                                    {prescriptions.map((p, i) => (
+                                        <div key={i} className="text-lg">
+                                            <div className="font-bold text-black">{p.medicineName}</div>
+                                            <div className="text-base pl-1 text-gray-800 flex gap-4 mt-1">
+                                                <span>{p.dosage}</span>
+                                                <span>&mdash;</span>
+                                                <span>{p.period}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Lab Requests */}
+                            {labRequests.length > 0 && (
+                                <div className="mt-10">
+                                    <h4 className="font-bold underline mb-3 text-lg">Lab Investigations:</h4>
+                                    <ul className="list-disc pl-6 space-y-2 text-lg">
+                                        {labRequests.map((l, i) => (
+                                            <li key={i}>{l.testName}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Notes */}
+                            {notes && (
+                                <div className="mt-10 pt-4 border-t border-gray-100 italic text-sm text-gray-600">
+                                    Note: {notes}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer: Signature */}
+                        <div className="fixed bottom-12 right-12 w-64">
+                            <div className="text-center">
+                                <div className="border-t border-gray-900 w-full mb-2"></div>
+                                <span className="text-lg font-bold">Signature</span>
                             </div>
                         </div>
                     </div>
