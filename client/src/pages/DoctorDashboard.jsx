@@ -13,7 +13,9 @@ export default function DoctorDashboard() {
     const [searchQuery, setSearchQuery] = useState("");
     const [walkInModal, setWalkInModal] = useState(false);
     const [walkInForm, setWalkInForm] = useState({ name: "", age: "", sex: "", phone: "" });
+
     const [walkInLoading, setWalkInLoading] = useState(false);
+    const [confirmingId, setConfirmingId] = useState(null); // Track which appointment is being cancelled
 
     useEffect(() => {
         if (user && user.role === "DOCTOR") {
@@ -166,26 +168,29 @@ export default function DoctorDashboard() {
                                         </div>
 
                                         <div className="flex gap-2 w-full sm:w-auto">
-                                            <button
-                                                onClick={() => {
-                                                    alert("Debug: Button Clicked"); // Immediate feedback
-                                                    if (window.confirm("Cancel this appointment?")) {
-                                                        alert("Debug: Sending Request...");
+
+                                            {confirmingId === apt.id ? (
+                                                <button
+                                                    onClick={() => {
                                                         doctorApi.cancelAppointment(apt.id)
                                                             .then(() => {
-                                                                alert("Debug: Success! Refreshing...");
                                                                 refreshData();
+                                                                setConfirmingId(null);
                                                             })
-                                                            .catch(err => {
-                                                                console.error("Cancel Error", err);
-                                                                alert("Debug: Failed: " + (err.response?.data?.error || err.message));
-                                                            });
-                                                    }
-                                                }}
-                                                className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-colors text-sm"
-                                            >
-                                                Cancel
-                                            </button>
+                                                            .catch(err => alert("Failed to cancel: " + (err.response?.data?.error || err.message)));
+                                                    }}
+                                                    className="px-4 py-3 bg-red-600 text-white rounded-xl font-bold transition-all animate-pulse text-sm"
+                                                >
+                                                    Confirm?
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => setConfirmingId(apt.id)}
+                                                    className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-colors text-sm"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            )}
                                             <Link
                                                 to={`/doctor/consult/${apt.id}`}
                                                 className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all active:scale-95 text-center shadow-lg shadow-blue-100"
