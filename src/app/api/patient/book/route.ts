@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
+        console.log("API Book Payload:", JSON.stringify(body, null, 2));
         const { patientId, doctorId, date, guestDetails } = body;
 
         let finalPatientId = patientId;

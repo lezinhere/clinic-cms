@@ -16,6 +16,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ doctorId
             include: { patient: true },
             orderBy: { date: "asc" },
         });
+        console.log("Doctor Appointments [0]:", appointments[0] ? JSON.stringify(appointments[0], null, 2) : "None");
         return NextResponse.json(appointments);
     } catch (error) {
         console.error("API GET Doctor Appointments Error:", error);
