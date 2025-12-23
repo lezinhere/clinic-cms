@@ -4,6 +4,12 @@ import { prisma } from '@/lib/db';
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
+        console.log("API: Fetching appointment ID:", id); // SERVER LOG
+
+        if (!id) {
+            return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+        }
+
         const appointment = await prisma.appointment.findUnique({
             where: { id },
             include: {
@@ -11,10 +17,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
                 doctor: true
             },
         });
+
+        if (!appointment) {
+            console.error("API: Appointment not found for ID:", id);
+            return NextResponse.json({ error: "Not Found" }, { status: 404 });
+        }
+
         return NextResponse.json(appointment);
-    } catch (error) {
+    } catch (error: any) {
         console.error("API GET Doctor Appointment Detail Error:", error);
-        return NextResponse.json(null, { status: 500 });
+        return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 });
     }
 }
 

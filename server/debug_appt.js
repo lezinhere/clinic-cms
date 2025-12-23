@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-    const id = '694a3c7d18ff98eb01fb704f';
+    const id = '6948c9a19efd662dddfeecd5';
     console.log("Fetching appointment:", id);
     try {
         const appt = await prisma.appointment.findUnique({
