@@ -190,7 +190,25 @@ app.get('/api/doctor/appointment/:id', async (req, res) => {
     }
 });
 
-// Cancel Appointment (PATCH)
+// Cancel Appointment (POST - safer than PATCH)
+app.post('/api/doctor/appointment/:id/cancel', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status) return res.status(400).json({ error: "Missing status" });
+
+        const appointment = await prisma.appointment.update({
+            where: { id },
+            data: { status },
+        });
+        res.json(appointment);
+    } catch (error) {
+        console.error("API POST Doctor Appointment Cancel Error:", error);
+        res.status(500).json({ error: "Failed to update: " + error.message });
+    }
+});
+
 app.patch('/api/doctor/appointment/:id', async (req, res) => {
     try {
         const { id } = req.params;

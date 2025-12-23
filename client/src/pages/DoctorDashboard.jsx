@@ -171,7 +171,7 @@ export default function DoctorDashboard() {
                                                     if (window.confirm("Cancel this appointment?")) {
                                                         doctorApi.cancelAppointment(apt.id)
                                                             .then(() => refreshData())
-                                                            .catch(err => alert("Failed to cancel"));
+                                                            .catch(err => alert("Failed to cancel: " + (err.response?.data?.error || err.message)));
                                                     }
                                                 }}
                                                 className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-colors text-sm"
