@@ -21,7 +21,6 @@ export default function BookingWizard() {
         sex: "",
         phone: "",
         doctorId: "",
-        doctorId: "",
         date: "",
         slotTime: "",
         tokenNumber: null
