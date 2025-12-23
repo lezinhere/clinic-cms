@@ -12,6 +12,7 @@ export default function ConsultationView() {
     const [loading, setLoading] = useState(false);
     const [showSummary, setShowSummary] = useState(false);
     const [loadError, setLoadError] = useState(null);
+    const [debugData, setDebugData] = useState(null);
 
     // Form State
     const [diagnosis, setDiagnosis] = useState("");
@@ -36,6 +37,7 @@ export default function ConsultationView() {
                 console.log("Fetch result:", res.data);
                 if (res.data) {
                     const apt = res.data;
+                    setDebugData(apt); // Capture raw response for debugging
                     console.log("Full Appointment Data:", apt);
                     if (apt.doctor && apt.doctor.name) {
                         setDoctor(apt.doctor);
@@ -299,8 +301,8 @@ export default function ConsultationView() {
                                 <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
                                 <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
                                 {!doctor?.name && (
-                                    <div className="text-[8px] font-mono text-red-500">
-                                        DEBUG: DocState is {JSON.stringify(doctor)} | ID: {patient?.doctorId || "N/A"}
+                                    <div className="text-[10px] font-mono text-red-500 break-words w-96 border border-red-500 p-1 bg-red-50">
+                                        DEBUG RAW: {JSON.stringify(debugData)}
                                     </div>
                                 )}
                             </div>
