@@ -404,15 +404,21 @@ app.post('/api/patient/book', async (req, res) => {
         const slotTime = req.body.slotTime; // e.g., "09:00 - 10:00"
 
         if (slotTime) {
-            // Count existing appointments for this doctor + date + slot
-            const existingApps = await prisma.appointment.count({
+            // Fix: Use MAX + 1 instead of COUNT to avoid duplicates
+            const lastAppointment = await prisma.appointment.findFirst({
                 where: {
                     doctorId,
-                    date: new Date(date),
-                    slotTime
-                }
+                    slotTime,
+                    date: {
+                        gte: new Date(date),
+                        lt: new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
+                    },
+                    status: { not: "CANCELLED" }
+                },
+                orderBy: { tokenNumber: 'desc' },
+                select: { tokenNumber: true }
             });
-            tokenNumber = existingApps + 1;
+            tokenNumber = (lastAppointment?.tokenNumber || 0) + 1;
         }
 
         const appointment = await prisma.appointment.create({
@@ -422,7 +428,11 @@ app.post('/api/patient/book', async (req, res) => {
                 date: new Date(date),
                 status: "PENDING",
                 slotTime,
-                tokenNumber
+                tokenNumber,
+                // Store actual patient details (Family Booking Support)
+                patientName: guestDetails ? guestDetails.name : (req.body.patientName || null),
+                patientAge: guestDetails ? parseInt(guestDetails.age) : (req.body.patientAge ? parseInt(req.body.patientAge) : null),
+                patientGender: guestDetails ? guestDetails.sex : (req.body.patientGender || null)
             }
         });
 
