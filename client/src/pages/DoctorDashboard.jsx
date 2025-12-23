@@ -167,11 +167,20 @@ export default function DoctorDashboard() {
 
                                         <div className="flex gap-2 w-full sm:w-auto">
                                             <button
+                                            <button
                                                 onClick={() => {
+                                                    alert("Debug: Button Clicked"); // Immediate feedback
                                                     if (window.confirm("Cancel this appointment?")) {
+                                                        alert("Debug: Sending Request...");
                                                         doctorApi.cancelAppointment(apt.id)
-                                                            .then(() => refreshData())
-                                                            .catch(err => alert("Failed to cancel: " + (err.response?.data?.error || err.message)));
+                                                            .then(() => {
+                                                                alert("Debug: Success! Refreshing...");
+                                                                refreshData();
+                                                            })
+                                                            .catch(err => {
+                                                                console.error("Cancel Error", err);
+                                                                alert("Debug: Failed: " + (err.response?.data?.error || err.message));
+                                                            });
                                                     }
                                                 }}
                                                 className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-colors text-sm"
