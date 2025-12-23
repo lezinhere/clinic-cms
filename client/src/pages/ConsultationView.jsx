@@ -173,31 +173,92 @@ export default function ConsultationView() {
                                 <button onClick={() => setShowSummary(false)} className="text-gray-400 hover:text-gray-600">✕</button>
                             </div>
 
-                            {/* PRINT ONLY HEADER (Formal) */}
-                            <div className="hidden print:block p-8 pb-0">
-                                <div className="flex justify-between items-end border-b-2 border-slate-800 pb-4 mb-6">
+                            {/* PRINT ONLY HEADER (Template Match) */}
+                            <div className="hidden print:block p-10 font-serif text-black">
+                                {/* Header: Doctor & Date */}
+                                <div className="flex justify-between items-start mb-2">
                                     <div>
-                                        <h1 className="text-3xl font-serif font-bold text-slate-900">CLINIC CMS</h1>
-                                        <p className="text-sm text-slate-600 font-serif italic">Excellence in Healthcare</p>
+                                        <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
+                                        <p className="text-lg text-black font-medium uppercase">{doctor?.specialization || "General Physician"}</p>
                                     </div>
-                                    <div className="text-right">
-                                        <h2 className="text-xl font-serif font-bold text-slate-900">Dr. {doctor?.name || "Doctor"}</h2>
-                                        <p className="text-xs text-slate-500 uppercase tracking-widest">{doctor?.specialization || "General Physician"}</p>
-                                        <p className="text-xs text-slate-500 mt-1">Reg No: {doctor?.id?.slice(-6).toUpperCase()}</p>
+                                    <div className="flex items-end gap-2 mt-4">
+                                        <span className="font-bold text-sm">Date:</span>
+                                        <div className="border-b border-gray-400 w-32 text-center pb-1 text-sm font-semibold">
+                                            {new Date().toLocaleDateString('en-GB')}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Patient Vitals Strip */}
-                                <div className="flex justify-between items-start bg-slate-50 p-4 border border-slate-200 rounded-lg mb-8">
-                                    <div className="space-y-1">
-                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Patient Details</div>
-                                        <div className="font-serif font-bold text-lg text-slate-900">{patient?.name}</div>
-                                        <div className="text-sm text-slate-600">{patient?.age} Yrs / {patient?.sex}</div>
+                                {/* Purple Separator */}
+                                <div className="h-1 bg-[#8B5CF6] w-full mb-8"></div>
+
+                                {/* Patient Details */}
+                                <div className="flex flex-col gap-6 mb-12">
+                                    <div className="flex items-end gap-2 w-full">
+                                        <span className="font-bold text-sm whitespace-nowrap">Patient's name:</span>
+                                        <div className="border-b border-gray-400 flex-1 text-lg font-semibold px-2 pb-1 relative top-1">
+                                            {patient?.name}
+                                        </div>
                                     </div>
-                                    <div className="text-right space-y-1">
-                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Consultation Info</div>
-                                        <div className="text-sm font-medium text-slate-900">Date: {new Date().toLocaleDateString()}</div>
-                                        <div className="text-sm font-medium text-slate-900">Ref: {appointmentId.slice(-6).toUpperCase()}</div>
+                                    <div className="flex items-end gap-2 w-1/3">
+                                        <span className="font-bold text-sm">Age:</span>
+                                        <div className="border-b border-gray-400 flex-1 text-lg font-semibold px-2 pb-1 text-center relative top-1">
+                                            {patient?.age}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* RX Symbol */}
+                                <div className="mb-8">
+                                    <h1 className="text-6xl font-serif">RX</h1>
+                                </div>
+
+                                {/* Prescription Content */}
+                                <div className="min-h-[400px]">
+                                    {/* Diagnosis if present */}
+                                    {diagnosis && (
+                                        <div className="mb-6">
+                                            <span className="font-bold underline">Diagnosis:</span> {diagnosis}
+                                        </div>
+                                    )}
+
+                                    {/* Medicines List */}
+                                    {prescriptions.length > 0 && (
+                                        <ul className="list-decimal pl-6 space-y-4 text-lg">
+                                            {prescriptions.map((p, i) => (
+                                                <li key={i}>
+                                                    <div className="font-bold">{p.medicineName}</div>
+                                                    <div className="text-sm pl-1">{p.dosage} &mdash; {p.period}</div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+
+                                    {/* Lab Requests */}
+                                    {labRequests.length > 0 && (
+                                        <div className="mt-8">
+                                            <h4 className="font-bold underline mb-2">Lab Investigations:</h4>
+                                            <ul className="list-disc pl-6 space-y-1">
+                                                {labRequests.map((l, i) => (
+                                                    <li key={i}>{l.testName}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {/* Notes */}
+                                    {notes && (
+                                        <div className="mt-8 italic text-sm">
+                                            Note: {notes}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Footer: Signature */}
+                                <div className="mt-auto pt-16 flex justify-end">
+                                    <div className="text-center w-64">
+                                        <div className="border-t border-gray-400 w-full mb-2"></div>
+                                        <span className="text-lg font-semibold">Signature</span>
                                     </div>
                                 </div>
                             </div>
