@@ -160,7 +160,7 @@ export default function DoctorDashboard() {
                                                     <span className="font-semibold text-blue-600 block sm:inline">
                                                         {apt.slotTime || new Date(apt.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </span>
-                                                    <span className="text-xs text-red-500 block">Debug: Guest="{apt.patientName}" Age={apt.patientAge} Status={apt.status} Phone={apt.patient.phone}</span>
+
                                                 </div>
                                             </div>
                                         </div>
