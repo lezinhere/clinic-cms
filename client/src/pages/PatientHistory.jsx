@@ -150,7 +150,10 @@ export default function PatientHistory() {
                                                     </div>
                                                     {lab.status === 'COMPLETED' ? (
                                                         lab.resultReport?.startsWith('PDF Report:') ? (
-                                                            <button className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors flex items-center gap-2">
+                                                            <button
+                                                                onClick={() => window.open(lab.resultReport.replace('PDF Report:', '').trim(), '_blank')}
+                                                                className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-xs hover:bg-indigo-100 transition-colors flex items-center gap-2"
+                                                            >
                                                                 <span className="text-lg">📄</span> View Results
                                                             </button>
                                                         ) : (
