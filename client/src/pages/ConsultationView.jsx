@@ -11,6 +11,7 @@ export default function ConsultationView() {
     const [doctor, setDoctor] = useState(null); // Capture doctor details
     const [loading, setLoading] = useState(false);
     const [showSummary, setShowSummary] = useState(false);
+    const [loadError, setLoadError] = useState(null);
 
     // Form State
     const [diagnosis, setDiagnosis] = useState("");
@@ -48,8 +49,12 @@ export default function ConsultationView() {
             })
             .catch(err => {
                 console.error("Failed to load appointment", err);
-                alert("Failed to load appointment details. Please try again.");
-                navigate("/doctor/dashboard");
+                // alert("Failed to load appointment details. Please try again."); // Comment out for debug
+                setPatient(null);
+                setDoctor(null);
+                // We'll show the error in the render
+                setLoadError(err.message || "Unknown Error");
+                // navigate("/doctor/dashboard"); // Disable auto-redirect for debug
             });
     }, [appointmentId, navigate]);
 
@@ -140,6 +145,11 @@ export default function ConsultationView() {
     if (!patient) return (
         <div className="min-h-screen flex items-center justify-center flex-col gap-4 text-teal-600 font-bold text-xl">
             <span className="animate-pulse">Loading Patient Data...</span>
+            {loadError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded text-red-600 font-mono text-sm max-w-md">
+                    API Error: {loadError}
+                </div>
+            )}
             <div className="text-xs text-gray-500 font-mono">
                 Debug: {JSON.stringify({ appointmentId, doctorState: doctor })}
             </div>
