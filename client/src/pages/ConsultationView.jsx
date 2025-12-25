@@ -54,8 +54,9 @@ export default function ConsultationView() {
                             })
                             .catch(e => {
                                 console.error("Fallback fetch failed", e);
+                                const errMsg = e.response?.data?.error || e.message;
                                 setLoadError("Doctor Data Fetch Failed");
-                                setFallbackStatus("Fallback Failed");
+                                setFallbackStatus("Fallback Failed: " + errMsg);
                             });
                     }
 
