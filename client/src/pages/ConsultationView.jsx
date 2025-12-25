@@ -42,16 +42,20 @@ export default function ConsultationView() {
                     console.log("Full Appointment Data:", apt);
                     if (apt.doctor && apt.doctor.name) {
                         setDoctor(apt.doctor);
+                        setFallbackStatus("Main Data OK");
                     } else if (apt.doctorId) {
                         console.log("Doctor data missing or incomplete, forcing fallback...", apt.doctorId);
+                        setFallbackStatus("Fetching Fallback...");
                         doctorApi.getDoctorById(apt.doctorId)
                             .then(docRes => {
                                 console.log("Fetched Doctor Fallback:", docRes.data);
                                 setDoctor(docRes.data);
+                                setFallbackStatus("Fallback Success");
                             })
                             .catch(e => {
                                 console.error("Fallback fetch failed", e);
                                 setLoadError("Doctor Data Fetch Failed");
+                                setFallbackStatus("Fallback Failed");
                             });
                     }
 
@@ -306,6 +310,8 @@ export default function ConsultationView() {
                                         DEBUG RAW: {JSON.stringify(debugData)}
                                         <br />
                                         <strong>Global Doc State: {JSON.stringify(doctor)}</strong>
+                                        <br />
+                                        <strong>Status: {fallbackStatus}</strong>
                                     </div>
                                 )}
                             </div>

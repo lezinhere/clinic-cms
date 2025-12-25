@@ -8,7 +8,7 @@ export const revalidate = 0;
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
-        console.log("API: Fetching appointment ID:", id); // SERVER LOG
+        console.log("API v1.6: Fetching appointment ID:", id); // SERVER LOG
 
         if (!id) {
             return NextResponse.json({ error: "Missing ID" }, { status: 400 });
