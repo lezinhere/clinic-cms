@@ -56,7 +56,9 @@ export default function ConsultationView() {
                                 console.error("Fallback fetch failed", e);
                                 const errMsg = e.response?.data?.error || e.message;
                                 setLoadError("Doctor Data Fetch Failed");
-                                setFallbackStatus("Fallback Failed: " + errMsg);
+                                // HARDCODE FIX as per User Request
+                                setDoctor({ name: "Abbas VM", specialization: "ENT" });
+                                setFallbackStatus("Fallback Failed: " + errMsg + " (Using Hardcoded Fix)");
                             });
                     }
 
@@ -185,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full ml-2">v1.6-Debug</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full ml-2">v1.7-Hotfix</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -304,9 +306,9 @@ export default function ConsultationView() {
                         {/* Header: Doctor & Date */}
                         <div className="flex justify-between items-start mb-1">
                             <div>
-                                <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Doctor"}</h1>
-                                <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "General Physician"}</p>
-                                {!doctor?.name && (
+                                <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Abbas VM"}</h1>
+                                <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
+                                {(!doctor?.name && !doctor) && (
                                     <div className="text-[10px] font-mono text-red-500 break-words w-96 border border-red-500 p-1 bg-red-50">
                                         DEBUG RAW: {JSON.stringify(debugData)}
                                         <br />
