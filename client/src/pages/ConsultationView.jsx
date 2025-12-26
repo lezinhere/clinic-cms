@@ -303,6 +303,15 @@ export default function ConsultationView() {
                 {/* DEDICATED PRINT VIEW - Outside Modal Stacking Context */}
                 {showSummary && (
                     <div id="printable-section" className="hidden print:block fixed inset-0 bg-white z-[10000] p-10 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0">
+                        <style>
+                            {`
+                                @media print {
+                                    @page { margin: 0; }
+                                    body { margin: 0; padding: 0; }
+                                    #printable-section { padding: 40px !important; }
+                                }
+                            `}
+                        </style>
                         {/* Header: Doctor & Date */}
                         <div className="flex justify-between items-start mb-1">
                             <div>
