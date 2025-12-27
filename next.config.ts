@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+// Vercel Trigger: 2025-12-27T09:51:54+05:30
+
 const nextConfig: NextConfig = {
   output: "standalone",
   typescript: {
