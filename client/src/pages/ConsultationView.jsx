@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full ml-2">v1.15-LeftForce</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full ml-2">v1.16-ZeroGap</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -307,8 +307,8 @@ export default function ConsultationView() {
                             {`
                                 @media print {
                                     @page { 
-                                        size: A5; 
-                                        margin: 0 !important; 
+                                        size: auto; /* Let printer manage paper size to avoid centering */
+                                        margin: 0mm !important; 
                                     }
                                     html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }
                                     
