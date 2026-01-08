@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full ml-2">v1.20-5cmTop</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-slate-100 text-slate-800 px-2 py-1 rounded-full ml-2">v1.21-CleanPrint</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -434,18 +434,8 @@ export default function ConsultationView() {
                             )}
                         </div>
 
-                        {/* Footer: Signature */}
-                        <div className="fixed bottom-16 right-12 w-64">
-                            <div className="text-center">
-                                <div className="border-t border-gray-900 w-full mb-2"></div>
-                                <span className="text-lg font-bold">Signature</span>
-                            </div>
-                        </div>
-
-                        {/* Footer: Booking Number */}
-                        <div className="fixed bottom-4 left-0 w-full text-center">
-                            <p className="font-bold text-xl uppercase tracking-widest">Booking : 9895606505</p>
-                        </div>
+                        {/* Footer REMOVED FOR LETTERHEAD PRINTING */}
+                        {/* No Signature or Booking Number required */}
                     </div>
                 )}
 
