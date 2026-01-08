@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// Vercel Trigger: 2026-01-08T21:38:00+05:30
+// Vercel Trigger: 2026-01-08T21:42:00+05:30
 
 const nextConfig: NextConfig = {
   output: "standalone",
