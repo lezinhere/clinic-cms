@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full ml-2">v1.12-LeftAlign</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full ml-2">v1.13-Final</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -306,14 +306,17 @@ export default function ConsultationView() {
                         <style>
                             {`
                                 @media print {
-                                    @page { size: 148mm 210mm; margin: 0; }
+                                    @page { 
+                                        size: A5; 
+                                        margin: 0mm !important; 
+                                    }
                                     html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
-                                    /* Left Aligned Safe Container */
+                                    
+                                    /* Compacting Layout & Left Aligning */
                                     #printable-section { 
-                                        padding: 5mm !important;
-                                        padding-left: 8mm !important; /* Slight left margin */
-                                        width: 130mm !important; 
-                                        max-width: 130mm !important;
+                                        padding: 8mm !important; /* Single uniform padding */
+                                        width: 100% !important; 
+                                        max-width: 138mm !important; /* Safe A5 width */
                                         margin: 0 !important;
                                         left: 0 !important;
                                         text-align: left !important;
@@ -322,45 +325,45 @@ export default function ConsultationView() {
                             `}
                         </style>
                         {/* Header: Clinic Details - Left Aligned */}
-                        <div className="text-left mb-4 border-b border-black pb-1">
-                            <h1 className="text-2xl font-bold uppercase tracking-wider mb-0.5">DAY CARE CLINIC</h1>
-                            <p className="text-xs font-semibold uppercase">Koottumoochi</p>
+                        <div className="text-left mb-2 border-b border-black pb-1">
+                            <h1 className="text-xl font-bold uppercase tracking-wider mb-0">DAY CARE CLINIC</h1>
+                            <p className="text-[10px] font-bold uppercase">Koottumoochi</p>
                         </div>
 
                         {/* Header: Doctor & Date */}
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <h1 className="text-xl font-bold text-black mb-0.5">Dr. {doctor?.name || "Abbas VM"}</h1>
-                                <p className="text-xs font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
+                                <h1 className="text-lg font-bold text-black mb-0">Dr. {doctor?.name || "Abbas VM"}</h1>
+                                <p className="text-[10px] font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
                             </div>
-                            <div className="flex items-end gap-2 mt-4">
-                                <span className="font-bold text-xs">Date:</span>
-                                <div className="border-b border-gray-900 w-24 text-center pb-1 text-xs font-bold">
+                            <div className="flex items-end gap-2 mt-1">
+                                <span className="font-bold text-[10px]">Date:</span>
+                                <div className="border-b border-gray-900 w-20 text-center pb-0 text-[10px] font-bold">
                                     {new Date().toLocaleDateString('en-GB')}
                                 </div>
                             </div>
                         </div>
 
                         {/* Purple Separator (Hidden) */}
-                        <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
+                        <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-4 mt-2"></div>
 
                         {/* Patient Details */}
-                        <div className="flex gap-4 mb-8 items-end">
+                        <div className="flex gap-4 mb-4 items-end">
                             <div className="flex-1 flex items-end gap-2">
-                                <span className="font-bold text-xs whitespace-nowrap">Patient's Name:</span>
-                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 relative translate-y-0.5">
+                                <span className="font-bold text-[10px] whitespace-nowrap">Patient:</span>
+                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 relative translate-y-0.5">
                                     {patient?.name}
                                 </div>
                             </div>
-                            <div className="w-16 flex items-end gap-2">
-                                <span className="font-bold text-xs">Age:</span>
-                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 text-center relative translate-y-0.5">
+                            <div className="w-12 flex items-end gap-1">
+                                <span className="font-bold text-[10px]">Age:</span>
+                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 text-center relative translate-y-0.5">
                                     {patient?.age}
                                 </div>
                             </div>
-                            <div className="w-20 flex items-end gap-2">
-                                <span className="font-bold text-xs">Sex:</span>
-                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 text-center relative translate-y-0.5">
+                            <div className="w-16 flex items-end gap-1">
+                                <span className="font-bold text-[10px]">Sex:</span>
+                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 text-center relative translate-y-0.5">
                                     {patient?.sex || "—"}
                                 </div>
                             </div>
