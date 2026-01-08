@@ -368,7 +368,7 @@ export default function ConsultationView() {
 
                         {/* RX Symbol */}
                         <div className="mb-6">
-                            <h1 className="text-7xl font-serif">RX</h1>
+                            <h1 className="text-5xl font-serif">RX</h1>
                         </div>
 
                         {/* Prescription Content */}
