@@ -312,8 +312,14 @@ export default function ConsultationView() {
                                 }
                             `}
                         </style>
+                        {/* Header: Clinic Details */}
+                        <div className="text-center mb-6 border-b-2 border-black pb-2">
+                            <h1 className="text-4xl font-bold uppercase tracking-wider mb-1">DAY CARE CLINIC</h1>
+                            <p className="text-lg font-semibold uppercase">Kootumuchi</p>
+                        </div>
+
                         {/* Header: Doctor & Date */}
-                        <div className="flex justify-between items-start mb-1">
+                        <div className="flex justify-between items-start mb-6">
                             <div>
                                 <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Abbas VM"}</h1>
                                 <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
