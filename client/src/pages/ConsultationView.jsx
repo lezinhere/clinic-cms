@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full ml-2">v1.13-Final</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full ml-2">v1.14-Refine</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -314,9 +314,9 @@ export default function ConsultationView() {
                                     
                                     /* Compacting Layout & Left Aligning */
                                     #printable-section { 
-                                        padding: 8mm !important; /* Single uniform padding */
+                                        padding: 3mm !important; /* Minimal padding */
                                         width: 100% !important; 
-                                        max-width: 138mm !important; /* Safe A5 width */
+                                        max-width: 140mm !important; /* Full width usage */
                                         margin: 0 !important;
                                         left: 0 !important;
                                         text-align: left !important;
