@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full ml-2">v1.7-Hotfix</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full ml-2">v1.10-A5</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -302,26 +302,32 @@ export default function ConsultationView() {
 
                 {/* DEDICATED PRINT VIEW - Outside Modal Stacking Context */}
                 {showSummary && (
-                    <div id="printable-section" className="hidden print:block fixed inset-0 bg-white z-[10000] p-10 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0">
+                    <div id="printable-section" className="hidden print:block fixed inset-0 bg-white z-[10000] p-4 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0">
                         <style>
                             {`
                                 @media print {
-                                    @page { size: 148mm 210mm; margin: 0; }
-                                    html, body { width: 148mm; height: 210mm; margin: 0; padding: 0; }
-                                    #printable-section { padding: 10mm !important; width: 148mm !important; height: 210mm !important; }
+                                    @page { size: A5 portrait; margin: 0; }
+                                    html, body { margin: 0; padding: 0; }
+                                    /* Force width to 135mm to account for printer margins */
+                                    #printable-section { 
+                                        padding: 8mm !important; 
+                                        width: 135mm !important; 
+                                        max-width: 135mm !important;
+                                        overflow: hidden !important;
+                                    }
                                 }
                             `}
                         </style>
                         {/* Header: Clinic Details */}
-                        <div className="text-center mb-6 border-b-2 border-black pb-2">
-                            <h1 className="text-3xl font-bold uppercase tracking-wider mb-1">DAY CARE CLINIC</h1>
-                            <p className="text-sm font-semibold uppercase">Koottumoochi</p>
+                        <div className="text-center mb-4 border-b border-black pb-1">
+                            <h1 className="text-2xl font-bold uppercase tracking-wider mb-0.5">DAY CARE CLINIC</h1>
+                            <p className="text-xs font-semibold uppercase">Koottumoochi</p>
                         </div>
 
                         {/* Header: Doctor & Date */}
-                        <div className="flex justify-between items-start mb-6">
+                        <div className="flex justify-between items-start mb-4">
                             <div>
-                                <h1 className="text-2xl font-bold text-black mb-1">Dr. {doctor?.name || "Abbas VM"}</h1>
+                                <h1 className="text-xl font-bold text-black mb-0.5">Dr. {doctor?.name || "Abbas VM"}</h1>
                                 <p className="text-xs font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
                             </div>
                             <div className="flex items-end gap-2 mt-4">
