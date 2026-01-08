@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full ml-2">v1.22-NoBold</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full ml-2">v1.23-CustomSize</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -312,21 +312,21 @@ export default function ConsultationView() {
                                     }
                                     html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }
                                     
-                                    /* Force Exact Left Alignment with 5cm Top Margin */
+                                    /* Force Exact Left Alignment with Custom Margins */
                                     #printable-section { 
                                         position: absolute !important;
                                         top: 0 !important;
                                         left: 0 !important;
                                         margin: 0 !important;
-                                        /* 5cm Top, 1cm others */
-                                        padding-top: 50mm !important; 
+                                        /* Custom Margins: Top 4cm, Left 2.5cm */
+                                        padding-top: 40mm !important; 
+                                        padding-left: 25mm !important;
                                         padding-right: 10mm !important;
                                         padding-bottom: 10mm !important;
-                                        padding-left: 10mm !important;
                                         
-                                        width: 148mm !important; /* STRICT A5 WIDTH */
-                                        max-width: 148mm !important;
-                                        height: 210mm !important; /* STRICT A5 HEIGHT */
+                                        width: 190mm !important; /* STRICT Custom WIDTH */
+                                        max-width: 190mm !important;
+                                        height: 250mm !important; /* STRICT Custom HEIGHT */
                                         box-sizing: border-box !important;
                                         text-align: left !important;
                                         overflow: hidden !important;
