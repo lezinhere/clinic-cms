@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full ml-2">v1.17-LayoutFix</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full ml-2">v1.18-FixedA5</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -319,9 +319,12 @@ export default function ConsultationView() {
                                         left: 0 !important;
                                         margin: 0 !important;
                                         padding: 10mm !important; /* 1cm Margin on all sides */
-                                        width: 100% !important; /* Full width */
+                                        width: 148mm !important; /* STRICT A5 WIDTH */
+                                        max-width: 148mm !important;
+                                        height: 210mm !important; /* STRICT A5 HEIGHT */
                                         box-sizing: border-box !important;
                                         text-align: left !important;
+                                        overflow: hidden !important;
                                     }
                                 }
                             `}
