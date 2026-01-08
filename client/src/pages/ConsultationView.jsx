@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full ml-2">v1.23-CustomSize</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-rose-100 text-rose-800 px-2 py-1 rounded-full ml-2">v1.24-BgImage</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -330,13 +330,25 @@ export default function ConsultationView() {
                                         box-sizing: border-box !important;
                                         text-align: left !important;
                                         overflow: hidden !important;
+                                        
+                                        /* Helper to ensure background color/images print */
+                                        -webkit-print-color-adjust: exact !important;
+                                        print-color-adjust: exact !important;
                                     }
                                 }
                             `}
                         </style>
+
+                        {/* BACKGROUND IMAGE */}
+                        <img
+                            src="/prescription-bg.jpg"
+                            alt="Background"
+                            className="absolute inset-0 w-full h-full object-cover -z-10 opacity-100"
+                        />
+
                         {/* HEADER REMOVED FOR LETTERHEAD PRINTING */}
                         {/* Only Date Required - Aligned Right */}
-                        <div className="flex justify-end mb-4">
+                        <div className="flex justify-end mb-4 relative z-10">
                             <div className="flex items-end gap-2">
                                 <span className="font-medium text-[10px]">Date:</span>
                                 <div className="border-b border-gray-900 w-24 text-center pb-0 text-[10px] font-medium">
