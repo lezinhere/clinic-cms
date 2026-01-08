@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full ml-2">v1.10-A5</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full ml-2">v1.11-Safe</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -302,18 +302,21 @@ export default function ConsultationView() {
 
                 {/* DEDICATED PRINT VIEW - Outside Modal Stacking Context */}
                 {showSummary && (
-                    <div id="printable-section" className="hidden print:block fixed inset-0 bg-white z-[10000] p-4 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0">
+                    <div id="printable-section" className="hidden print:block fixed inset-0 bg-white z-[10000] p-0 font-serif text-black h-[100vh] w-[100vw] overflow-visible top-0 left-0 m-0 flex justify-center">
                         <style>
                             {`
                                 @media print {
-                                    @page { size: A5 portrait; margin: 0; }
-                                    html, body { margin: 0; padding: 0; }
-                                    /* Force width to 135mm to account for printer margins */
+                                    @page { size: 148mm 210mm; margin: 0; }
+                                    html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+                                    /* Safe A5 Container: 120mm Width, Centered */
                                     #printable-section { 
-                                        padding: 8mm !important; 
-                                        width: 135mm !important; 
-                                        max-width: 135mm !important;
-                                        overflow: hidden !important;
+                                        padding: 5mm !important; 
+                                        width: 120mm !important; 
+                                        max-width: 120mm !important;
+                                        margin: 0 auto !important;
+                                        left: auto !important;
+                                        right: auto !important;
+                                        position: relative !important;
                                     }
                                 }
                             `}
