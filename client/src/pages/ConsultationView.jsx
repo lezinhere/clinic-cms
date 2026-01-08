@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full ml-2">v1.16-ZeroGap</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full ml-2">v1.17-LayoutFix</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -312,16 +312,15 @@ export default function ConsultationView() {
                                     }
                                     html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; }
                                     
-                                    /* Force Exact Left Alignment */
+                                    /* Force Exact Left Alignment with 1cm Margin */
                                     #printable-section { 
                                         position: absolute !important;
                                         top: 0 !important;
                                         left: 0 !important;
                                         margin: 0 !important;
-                                        padding: 0 !important; /* Zero padding */
-                                        padding-left: 2mm !important; /* Tiny safety buffer */
-                                        width: 148mm !important; /* Full A5 width */
-                                        max-width: 148mm !important;
+                                        padding: 10mm !important; /* 1cm Margin on all sides */
+                                        width: 100% !important; /* Full width */
+                                        box-sizing: border-box !important;
                                         text-align: left !important;
                                     }
                                 }
@@ -351,23 +350,28 @@ export default function ConsultationView() {
                         <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-4 mt-2"></div>
 
                         {/* Patient Details */}
-                        <div className="flex gap-4 mb-4 items-end">
-                            <div className="flex-1 flex items-end gap-2">
-                                <span className="font-bold text-[10px] whitespace-nowrap">Patient:</span>
-                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 relative translate-y-0.5">
+                        {/* Patient Details - 2 Rows */}
+                        <div className="mb-4">
+                            {/* Row 1: Name */}
+                            <div className="flex items-end gap-2 mb-2">
+                                <span className="font-bold text-sm whitespace-nowrap">Patient:</span>
+                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 relative translate-y-0.5">
                                     {patient?.name}
                                 </div>
                             </div>
-                            <div className="w-12 flex items-end gap-1">
-                                <span className="font-bold text-[10px]">Age:</span>
-                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 text-center relative translate-y-0.5">
-                                    {patient?.age}
+                            {/* Row 2: Age & Sex */}
+                            <div className="flex gap-4">
+                                <div className="w-24 flex items-end gap-1">
+                                    <span className="font-bold text-sm">Age:</span>
+                                    <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 text-center relative translate-y-0.5">
+                                        {patient?.age}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="w-16 flex items-end gap-1">
-                                <span className="font-bold text-[10px]">Sex:</span>
-                                <div className="border-b border-gray-400 flex-1 text-sm font-bold px-1 pb-0 text-center relative translate-y-0.5">
-                                    {patient?.sex || "—"}
+                                <div className="w-32 flex items-end gap-1">
+                                    <span className="font-bold text-sm">Sex:</span>
+                                    <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 text-center relative translate-y-0.5">
+                                        {patient?.sex || "—"}
+                                    </div>
                                 </div>
                             </div>
                         </div>
