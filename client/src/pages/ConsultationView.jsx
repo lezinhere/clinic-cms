@@ -315,7 +315,7 @@ export default function ConsultationView() {
                         {/* Header: Clinic Details */}
                         <div className="text-center mb-6 border-b-2 border-black pb-2">
                             <h1 className="text-4xl font-bold uppercase tracking-wider mb-1">DAY CARE CLINIC</h1>
-                            <p className="text-lg font-semibold uppercase">Kootumuchi</p>
+                            <p className="text-lg font-semibold uppercase">Koottumoochi</p>
                         </div>
 
                         {/* Header: Doctor & Date */}
@@ -345,17 +345,23 @@ export default function ConsultationView() {
                         <div className="h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
 
                         {/* Patient Details */}
-                        <div className="flex flex-col gap-6 mb-12">
-                            <div className="flex items-end gap-2 w-2/3">
-                                <span className="font-bold text-sm whitespace-nowrap">Patient's name:</span>
+                        <div className="flex gap-6 mb-12 items-end">
+                            <div className="flex-1 flex items-end gap-2">
+                                <span className="font-bold text-sm whitespace-nowrap">Patient's Name:</span>
                                 <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 relative translate-y-1">
                                     {patient?.name}
                                 </div>
                             </div>
-                            <div className="flex items-end gap-2 w-1/3">
+                            <div className="w-24 flex items-end gap-2">
                                 <span className="font-bold text-sm">Age:</span>
                                 <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
                                     {patient?.age}
+                                </div>
+                            </div>
+                            <div className="w-28 flex items-end gap-2">
+                                <span className="font-bold text-sm">Sex:</span>
+                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
+                                    {patient?.sex || "—"}
                                 </div>
                             </div>
                         </div>
@@ -421,11 +427,16 @@ export default function ConsultationView() {
                         </div>
 
                         {/* Footer: Signature */}
-                        <div className="fixed bottom-12 right-12 w-64">
+                        <div className="fixed bottom-16 right-12 w-64">
                             <div className="text-center">
                                 <div className="border-t border-gray-900 w-full mb-2"></div>
                                 <span className="text-lg font-bold">Signature</span>
                             </div>
+                        </div>
+
+                        {/* Footer: Booking Number */}
+                        <div className="fixed bottom-4 left-0 w-full text-center">
+                            <p className="font-bold text-xl uppercase tracking-widest">Booking : 9895606505</p>
                         </div>
                     </div>
                 )}
