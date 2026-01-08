@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full ml-2">v1.18-FixedA5</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full ml-2">v1.19-Letterhead</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -329,25 +329,18 @@ export default function ConsultationView() {
                                 }
                             `}
                         </style>
-                        {/* Header: Clinic Details - Left Aligned */}
-                        <div className="text-left mb-2 border-b border-black pb-1">
-                            <h1 className="text-xl font-bold uppercase tracking-wider mb-0">DAY CARE CLINIC</h1>
-                            <p className="text-[10px] font-bold uppercase">Koottumoochi</p>
-                        </div>
-
-                        {/* Header: Doctor & Date */}
-                        <div className="flex justify-between items-start mb-4">
-                            <div>
-                                <h1 className="text-lg font-bold text-black mb-0">Dr. {doctor?.name || "Abbas VM"}</h1>
-                                <p className="text-[10px] font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
-                            </div>
-                            <div className="flex items-end gap-2 mt-1">
+                        {/* HEADER REMOVED FOR LETTERHEAD PRINTING */}
+                        {/* Only Date Required - Aligned Right */}
+                        <div className="flex justify-end mb-4">
+                            <div className="flex items-end gap-2">
                                 <span className="font-bold text-[10px]">Date:</span>
-                                <div className="border-b border-gray-900 w-20 text-center pb-0 text-[10px] font-bold">
+                                <div className="border-b border-gray-900 w-24 text-center pb-0 text-[10px] font-bold">
                                     {new Date().toLocaleDateString('en-GB')}
                                 </div>
                             </div>
                         </div>
+
+                        {/* Purple Separator (Hidden) */}
 
                         {/* Purple Separator (Hidden) */}
                         <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-4 mt-2"></div>
