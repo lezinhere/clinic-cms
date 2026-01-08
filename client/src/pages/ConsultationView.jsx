@@ -187,7 +187,7 @@ export default function ConsultationView() {
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl font-bold">Rx</div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-slate-100 text-slate-800 px-2 py-1 rounded-full ml-2">v1.21-CleanPrint</span></h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-none">Clinical Workspace <span className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full ml-2">v1.22-NoBold</span></h1>
                         <p className="text-xs font-medium text-gray-500 mt-1">APT-{appointmentId.slice(-4)} • <span className="text-teal-600">Active Session</span></p>
                     </div>
                 </div>
@@ -338,14 +338,12 @@ export default function ConsultationView() {
                         {/* Only Date Required - Aligned Right */}
                         <div className="flex justify-end mb-4">
                             <div className="flex items-end gap-2">
-                                <span className="font-bold text-[10px]">Date:</span>
-                                <div className="border-b border-gray-900 w-24 text-center pb-0 text-[10px] font-bold">
+                                <span className="font-medium text-[10px]">Date:</span>
+                                <div className="border-b border-gray-900 w-24 text-center pb-0 text-[10px] font-medium">
                                     {new Date().toLocaleDateString('en-GB')}
                                 </div>
                             </div>
                         </div>
-
-                        {/* Purple Separator (Hidden) */}
 
                         {/* Purple Separator (Hidden) */}
                         <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-4 mt-2"></div>
@@ -355,22 +353,22 @@ export default function ConsultationView() {
                         <div className="mb-4">
                             {/* Row 1: Name */}
                             <div className="flex items-end gap-2 mb-2">
-                                <span className="font-bold text-sm whitespace-nowrap">Patient:</span>
-                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 relative translate-y-0.5">
+                                <span className="font-medium text-sm whitespace-nowrap">Patient:</span>
+                                <div className="border-b border-gray-400 flex-1 text-base font-medium px-1 pb-0 relative translate-y-0.5">
                                     {patient?.name}
                                 </div>
                             </div>
                             {/* Row 2: Age & Sex */}
                             <div className="flex gap-4">
                                 <div className="w-24 flex items-end gap-1">
-                                    <span className="font-bold text-sm">Age:</span>
-                                    <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 text-center relative translate-y-0.5">
+                                    <span className="font-medium text-sm">Age:</span>
+                                    <div className="border-b border-gray-400 flex-1 text-base font-medium px-1 pb-0 text-center relative translate-y-0.5">
                                         {patient?.age}
                                     </div>
                                 </div>
                                 <div className="w-32 flex items-end gap-1">
-                                    <span className="font-bold text-sm">Sex:</span>
-                                    <div className="border-b border-gray-400 flex-1 text-base font-bold px-1 pb-0 text-center relative translate-y-0.5">
+                                    <span className="font-medium text-sm">Sex:</span>
+                                    <div className="border-b border-gray-400 flex-1 text-base font-medium px-1 pb-0 text-center relative translate-y-0.5">
                                         {patient?.sex || "—"}
                                     </div>
                                 </div>
@@ -384,7 +382,7 @@ export default function ConsultationView() {
                             {/* Diagnosis */}
                             {diagnosis && (
                                 <div className="mb-6">
-                                    <span className="font-bold underline">Diagnosis:</span> <span className="font-medium">{diagnosis}</span>
+                                    <span className="font-medium underline">Diagnosis:</span> <span className="font-normal">{diagnosis}</span>
                                 </div>
                             )}
 
@@ -394,19 +392,19 @@ export default function ConsultationView() {
                                     <table className="w-full text-left border-collapse">
                                         <thead>
                                             <tr className="border-b border-gray-400">
-                                                <th className="py-2 text-sm font-bold w-12 text-center">Sl.No</th>
-                                                <th className="py-2 text-sm font-bold">Medicine Name</th>
-                                                <th className="py-2 text-sm font-bold">Dosage</th>
-                                                <th className="py-2 text-sm font-bold">Period</th>
+                                                <th className="py-2 text-sm font-medium w-12 text-center">Sl.No</th>
+                                                <th className="py-2 text-sm font-medium">Medicine Name</th>
+                                                <th className="py-2 text-sm font-medium">Dosage</th>
+                                                <th className="py-2 text-sm font-medium">Period</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {prescriptions.map((p, i) => (
                                                 <tr key={i} className="border-b border-gray-200">
-                                                    <td className="py-3 text-sm text-center font-semibold">{i + 1}</td>
-                                                    <td className="py-3 text-lg font-bold">{p.medicineName}</td>
-                                                    <td className="py-3 text-base font-medium">{p.dosage}</td>
-                                                    <td className="py-3 text-base">{p.period}</td>
+                                                    <td className="py-3 text-sm text-center font-normal">{i + 1}</td>
+                                                    <td className="py-3 text-lg font-medium">{p.medicineName}</td>
+                                                    <td className="py-3 text-base font-normal">{p.dosage}</td>
+                                                    <td className="py-3 text-base font-normal">{p.period}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -417,8 +415,8 @@ export default function ConsultationView() {
                             {/* Lab Requests */}
                             {labRequests.length > 0 && (
                                 <div className="mt-10">
-                                    <h4 className="font-bold underline mb-3 text-lg">Lab Investigations:</h4>
-                                    <ul className="list-disc pl-6 space-y-2 text-lg">
+                                    <h4 className="font-medium underline mb-3 text-lg">Lab Investigations:</h4>
+                                    <ul className="list-disc pl-6 space-y-2 text-lg font-normal">
                                         {labRequests.map((l, i) => (
                                             <li key={i}>{l.testName}</li>
                                         ))}
