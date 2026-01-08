@@ -306,70 +306,58 @@ export default function ConsultationView() {
                         <style>
                             {`
                                 @media print {
-                                    @page { margin: 0; }
-                                    body { margin: 0; padding: 0; }
-                                    #printable-section { padding: 40px !important; }
+                                    @page { size: 148mm 210mm; margin: 0; }
+                                    html, body { width: 148mm; height: 210mm; margin: 0; padding: 0; }
+                                    #printable-section { padding: 10mm !important; width: 148mm !important; height: 210mm !important; }
                                 }
                             `}
                         </style>
                         {/* Header: Clinic Details */}
                         <div className="text-center mb-6 border-b-2 border-black pb-2">
-                            <h1 className="text-4xl font-bold uppercase tracking-wider mb-1">DAY CARE CLINIC</h1>
-                            <p className="text-lg font-semibold uppercase">Koottumoochi</p>
+                            <h1 className="text-3xl font-bold uppercase tracking-wider mb-1">DAY CARE CLINIC</h1>
+                            <p className="text-sm font-semibold uppercase">Koottumoochi</p>
                         </div>
 
                         {/* Header: Doctor & Date */}
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h1 className="text-3xl font-bold text-black mb-1">Dr. {doctor?.name || "Abbas VM"}</h1>
-                                <p className="text-sm font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
-                                {(!doctor?.name && !doctor) && (
-                                    <div className="text-[10px] font-mono text-red-500 break-words w-96 border border-red-500 p-1 bg-red-50">
-                                        DEBUG RAW: {JSON.stringify(debugData)}
-                                        <br />
-                                        <strong>Global Doc State: {JSON.stringify(doctor)}</strong>
-                                        <br />
-                                        <strong>Status: {fallbackStatus}</strong>
-                                    </div>
-                                )}
+                                <h1 className="text-2xl font-bold text-black mb-1">Dr. {doctor?.name || "Abbas VM"}</h1>
+                                <p className="text-xs font-bold text-black uppercase tracking-wider">{doctor?.specialization || "ENT"}</p>
                             </div>
                             <div className="flex items-end gap-2 mt-4">
-                                <span className="font-bold text-sm">Date:</span>
-                                <div className="border-b border-gray-900 w-32 text-center pb-1 text-sm font-bold">
+                                <span className="font-bold text-xs">Date:</span>
+                                <div className="border-b border-gray-900 w-24 text-center pb-1 text-xs font-bold">
                                     {new Date().toLocaleDateString('en-GB')}
                                 </div>
                             </div>
                         </div>
 
-                        {/* Purple Separator */}
-                        <div className="h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
+                        {/* Purple Separator (Hidden) */}
+                        <div className="hidden h-1.5 bg-[#8B5CF6] w-full mb-10 mt-2"></div>
 
                         {/* Patient Details */}
-                        <div className="flex gap-6 mb-12 items-end">
+                        <div className="flex gap-4 mb-8 items-end">
                             <div className="flex-1 flex items-end gap-2">
-                                <span className="font-bold text-sm whitespace-nowrap">Patient's Name:</span>
-                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 relative translate-y-1">
+                                <span className="font-bold text-xs whitespace-nowrap">Patient's Name:</span>
+                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 relative translate-y-0.5">
                                     {patient?.name}
                                 </div>
                             </div>
-                            <div className="w-24 flex items-end gap-2">
-                                <span className="font-bold text-sm">Age:</span>
-                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
+                            <div className="w-16 flex items-end gap-2">
+                                <span className="font-bold text-xs">Age:</span>
+                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 text-center relative translate-y-0.5">
                                     {patient?.age}
                                 </div>
                             </div>
-                            <div className="w-28 flex items-end gap-2">
-                                <span className="font-bold text-sm">Sex:</span>
-                                <div className="border-b border-gray-400 flex-1 text-lg font-bold px-2 pb-0 text-center relative translate-y-1">
+                            <div className="w-20 flex items-end gap-2">
+                                <span className="font-bold text-xs">Sex:</span>
+                                <div className="border-b border-gray-400 flex-1 text-base font-bold px-2 pb-0 text-center relative translate-y-0.5">
                                     {patient?.sex || "—"}
                                 </div>
                             </div>
                         </div>
 
-                        {/* RX Symbol */}
-                        <div className="mb-6">
-                            <h1 className="text-5xl font-serif">RX</h1>
-                        </div>
+                        {/* RX Symbol REMOVED */}
 
                         {/* Prescription Content */}
                         <div className="min-h-[400px]">
